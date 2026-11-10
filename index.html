@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Turbo Technologies</title>
-<meta name="description" content="Secondary air systems and rotor thrust for small gas turbines. Engineering consultancy, Prague.">
+<meta name="description" content="Engineering tools for gas turbines and turbomachinery. Prague.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Rubik:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -12,81 +12,53 @@
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--ink);font:17px/1.6 'IBM Plex Sans',Arial,sans-serif}
 a{color:var(--accent)}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
 header{background:var(--ink);color:#F6F5F1}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:16px;flex-wrap:wrap}
 nav b{font:600 20px Rubik,Arial,sans-serif;letter-spacing:.5px}
 nav a{color:#C9D2E0;text-decoration:none;margin-left:20px;font-size:15px}
-.hero{padding:72px 0 88px}
-.hero h1{font:600 clamp(32px,5vw,54px)/1.12 Rubik,Arial,sans-serif;max-width:820px}
-.hero p{color:#C9D2E0;font-size:20px;max-width:680px;margin-top:20px}
-.btn{display:inline-block;margin-top:32px;background:var(--accent);color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:500}
-section{padding:64px 0;border-bottom:1px solid var(--line)}
-h2{font:600 32px/1.2 Rubik,Arial,sans-serif;margin-bottom:28px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px}
-.card h3{font:600 20px Rubik,Arial,sans-serif;margin-bottom:8px}
-.card p{color:var(--muted);font-size:15.5px}
-.card .meta{margin-top:14px;font-size:14px;color:var(--accent);font-weight:500}
-ol.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:16px}
-ol.steps li{counter-increment:s;padding-left:52px;position:relative;color:var(--muted)}
-ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:600 16px Rubik,sans-serif}
-ol.steps b{color:var(--ink)}
-ul.why{padding-left:20px;display:grid;gap:10px;color:var(--muted)}
-.oss{background:var(--ink);color:#F6F5F1;border-radius:16px;padding:36px}
-.oss p{color:#C9D2E0;max-width:700px}
-.oss a{color:#fff}
-footer{padding:40px 0;color:var(--muted);font-size:15px}
+.hero{padding:64px 0 76px}
+.hero h1{font:600 clamp(30px,5vw,50px)/1.15 Rubik,Arial,sans-serif;max-width:760px}
+.hero p{color:#C9D2E0;font-size:19px;max-width:620px;margin-top:18px}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.num{font:600 14px Rubik,sans-serif;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+h2{font:600 30px/1.2 Rubik,Arial,sans-serif;margin:8px 0 18px}
+.lead{font-size:18.5px;max-width:720px}
+ul.pts{list-style:none;padding:0;margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+ul.pts li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;color:var(--muted);font-size:15.5px}
+ul.pts b{display:block;color:var(--ink);font:600 17px Rubik,sans-serif;margin-bottom:4px}
+.next{background:var(--ink);color:#F6F5F1;border-radius:16px;padding:36px}
+.next p{color:#C9D2E0;max-width:640px}
+footer{padding:36px 0;color:var(--muted);font-size:15px}
 </style>
 </head>
 <body>
 <header>
  <div class="wrap">
-  <nav><b>TURBO TECHNOLOGIES</b><span><a href="#services">Services</a><a href="#sasnet">sasnet</a><a href="#contact">Contact</a></span></nav>
+  <nav><b>TURBO TECHNOLOGIES</b><span><a href="#sas">Secondary air</a><a href="#contact">Contact</a></span></nav>
   <div class="hero">
-   <h1>Secondary air systems and rotor thrust for small gas turbines</h1>
-   <p>Cooling flows, seal leakage, cavity pressures and bearing loads decide whether a small engine lives long or fails early. We size and check them with a validated 1D network method and 20+ years of engine programmes behind it.</p>
-   <a class="btn" href="#contact">Discuss your engine</a>
+   <h1>Engineering tools for gas turbines and turbomachinery</h1>
+   <p>Calculation methods built from first principles and checked against real engine programmes.</p>
   </div>
  </div>
 </header>
 
 <main class="wrap">
- <section id="services">
-  <h2>What we deliver</h2>
-  <div class="grid">
-   <div class="card"><h3>Network check</h3><p>Independent review of your existing SAS model or results against a sasnet network: agreements, discrepancies, risks.</p><div class="meta">Short report</div></div>
-   <div class="card"><h3>SAS &amp; thrust design</h3><p>Network built from your drawings; flows, cavity pressures and temperatures on key regimes; rotor axial forces and bearing load margins.</p><div class="meta">Report, network files, trend charts</div></div>
-   <div class="card"><h3>Certification support</h3><p>Calculation reports and validation evidence structured for EASA CS-E and Part 21 compliance.</p><div class="meta">By agreement</div></div>
-   <div class="card"><h3>Training</h3><p>Two to three day course: SAS networks from first principles to a certification report, with worked examples.</p><div class="meta">For teams and universities</div></div>
-  </div>
- </section>
-
- <section>
-  <h2>How we work</h2>
-  <ol class="steps">
-   <li><b>Kick-off.</b> You send the cross-section, seal and hole geometry, and the cycle points.</li>
-   <li><b>Network.</b> We build and solve it and agree the list of assumptions with you; every number not taken from your data is flagged.</li>
-   <li><b>Anchoring.</b> Results are tied to a known point (test data or a previous engine) and changes are judged by trend, not by absolute CFD numbers alone.</li>
-   <li><b>Report.</b> Flows, pressures, thrust and margins, with a source for every input.</li>
-  </ol>
- </section>
-
- <section>
-  <h2>Why us</h2>
-  <ul class="why">
-   <li>Engine-programme background at chief-designer and programme-director level on small gas turbines.</li>
-   <li>Methods built from first principles: Bernoulli, Euler, Borda–Carnot, Poiseuille, Kirchhoff.</li>
-   <li>Checked against archived engine networks of 200+ branches.</li>
-   <li>Daily work inside an EASA Part 21J design organisation: we write reports the authority accepts.</li>
+ <section id="sas">
+  <div class="num">01</div>
+  <h2>Secondary air system calculation</h2>
+  <p class="lead">A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust. Validated against results of engine calculations and built on the classics: Bernoulli, Euler, Kirchhoff, Borda–Carnot.</p>
+  <ul class="pts">
+   <li><b>Structured</b>Cavities, holes, labyrinths and ducts as one network, every input traceable.</li>
+   <li><b>Validated</b>Checked against archived networks of 200+ branches.</li>
+   <li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
   </ul>
  </section>
 
- <section id="sasnet">
-  <div class="oss">
-   <h2>sasnet — open secondary-air network solver</h2>
-   <p>Our solver core is open: every loss model is derived from first principles and the derivations are published next to the code. Orifices, labyrinth seals with choking, ducts with rotation, bends and heating, and rotor axial thrust from the solved cavity pressures.</p>
-   <p style="margin-top:16px">Repository: coming soon on GitHub.</p>
+ <section>
+  <div class="next">
+   <h2>More is coming</h2>
+   <p>Stay tuned for further tools for gas turbines and turbomachinery.</p>
   </div>
  </section>
 
