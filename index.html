@@ -20,6 +20,7 @@ nav a{color:#C9D2E0;text-decoration:none;margin-left:20px;font-size:15px}
 .hero{padding:64px 0 76px}
 .hero h1{font:600 clamp(30px,5vw,50px)/1.15 Rubik,Arial,sans-serif;max-width:760px}
 .hero p{color:#C9D2E0;font-size:19px;max-width:620px;margin-top:18px}
+.hero p.motto{color:#F6F5F1;font-size:17px;font-style:italic;margin-top:26px}
 section{padding:56px 0;border-bottom:1px solid var(--line)}
 .num{font:600 14px Rubik,sans-serif;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
 h2{font:600 30px/1.2 Rubik,Arial,sans-serif;margin:8px 0 18px}
@@ -37,29 +38,18 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <body>
 <header>
 <div class="wrap">
-<nav><b>TURBO TECHNOLOGIES</b><span><a href="#sas">Secondary air</a><a href="#turbonexus">TurboNexus</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
+<nav><b>TURBO TECHNOLOGIES</b><span><a href="#turbonexus">TurboNexus</a><a href="#sas">Secondary air</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
 <div class="hero">
 <h1>Engineering tools for gas turbines and turbomachinery</h1>
 <p>Since 2011. Calculation methods built from first principles and checked against real engine programmes.</p>
+<p class="motto">“All models are wrong, but some are useful.” — George Box. Ours are very useful. © Turbo Technologies</p>
 </div>
 </div>
 </header>
 
 <main class="wrap">
-<section id="sas">
-<div class="num">01</div>
-<h2>Secondary flows in gas turbines and turbomachinery</h2>
-<p class="lead">A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust in gas turbines and other turbomachines. Validated on gas turbine engine networks and consistent with tools used in EASA Part 21 and CS-E work. Built on the classics: Bernoulli, Euler, Kirchhoff, Borda–Carnot.</p>
-<ul class="pts">
-<li><b>Structured</b>Cavities, holes, labyrinths and ducts as one network, every input traceable.</li>
-<li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
-<li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
-</ul>
-<p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
-</section>
-
 <section id="turbonexus">
-<div class="num">02 · In development</div>
+<div class="num">01 · In development</div>
 <h2>TurboNexus: an AI engineering agent for CAD</h2>
 <p class="lead">A design change described in words, carried out on the model, with the old and the new version and the bill-of-materials difference in front of the engineer who approves it.</p>
 <video class="teaser" controls preload="none" playsinline poster="turbonexus-poster.jpg">
@@ -73,6 +63,18 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 </ul>
 <p class="note">The video shows a prototype run on a real assembly: an access platform taken from 8 to 10 steps (deck 2254 → 2754 mm, base 2860 → 3462 mm, eight BOM positions changed). Strength and stability checks of the variant are not part of the example.</p>
 <p class="lead" style="margin-top:18px">Interested in a pilot? <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus%20pilot">turbotechnologies@email.cz</a></p>
+</section>
+
+<section id="sas">
+<div class="num">02</div>
+<h2>Secondary flows in gas turbines and turbomachinery</h2>
+<p class="lead">A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust in gas turbines and other turbomachines. Validated on gas turbine engine networks and consistent with tools used in EASA Part 21 and CS-E work. Built on the classics: Bernoulli, Euler, Kirchhoff, Borda–Carnot.</p>
+<ul class="pts">
+<li><b>Structured</b>Cavities, holes, labyrinths and ducts as one network, every input traceable.</li>
+<li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
+<li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
+</ul>
+<p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
 </section>
 
 <section>
