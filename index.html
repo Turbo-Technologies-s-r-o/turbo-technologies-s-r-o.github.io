@@ -29,45 +29,64 @@ ul.pts li{background:var(--card);border:1px solid var(--line);border-radius:12px
 ul.pts b{display:block;color:var(--ink);font:600 17px Rubik,sans-serif;margin-bottom:4px}
 .next{background:var(--ink);color:#F6F5F1;border-radius:16px;padding:36px}
 .next p{color:#C9D2E0;max-width:640px}
+video.teaser{display:block;width:100%;height:auto;margin-top:26px;border-radius:12px;border:1px solid var(--line);background:#16191d}
+.note{color:var(--muted);font-size:15.5px;max-width:720px;margin-top:18px}
 footer{padding:36px 0;color:var(--muted);font-size:15px}
 </style>
 </head>
 <body>
 <header>
- <div class="wrap">
-  <nav><b>TURBO TECHNOLOGIES</b><span><a href="#sas">Secondary air</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
-  <div class="hero">
-   <h1>Engineering tools for gas turbines and turbomachinery</h1>
-   <p>Since 2011. Calculation methods built from first principles and checked against real engine programmes.</p>
-  </div>
- </div>
+<div class="wrap">
+<nav><b>TURBO TECHNOLOGIES</b><span><a href="#sas">Secondary air</a><a href="#turbonexus">TurboNexus</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
+<div class="hero">
+<h1>Engineering tools for gas turbines and turbomachinery</h1>
+<p>Since 2011. Calculation methods built from first principles and checked against real engine programmes.</p>
+</div>
+</div>
 </header>
 
 <main class="wrap">
- <section id="sas">
-  <div class="num">01</div>
-  <h2>Secondary flows in gas turbines and turbomachinery</h2>
-  <p class="lead">A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust in gas turbines and other turbomachines. Validated on gas turbine engine networks and consistent with tools used in EASA Part 21 and CS-E work. Built on the classics: Bernoulli, Euler, Kirchhoff, Borda–Carnot.</p>
-  <ul class="pts">
-   <li><b>Structured</b>Cavities, holes, labyrinths and ducts as one network, every input traceable.</li>
-   <li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
-   <li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
-  </ul>
-  <p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
- </section>
+<section id="sas">
+<div class="num">01</div>
+<h2>Secondary flows in gas turbines and turbomachinery</h2>
+<p class="lead">A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust in gas turbines and other turbomachines. Validated on gas turbine engine networks and consistent with tools used in EASA Part 21 and CS-E work. Built on the classics: Bernoulli, Euler, Kirchhoff, Borda–Carnot.</p>
+<ul class="pts">
+<li><b>Structured</b>Cavities, holes, labyrinths and ducts as one network, every input traceable.</li>
+<li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
+<li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
+</ul>
+<p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
+</section>
 
- <section>
-  <div class="next">
-   <h2>More is coming</h2>
-   <p>Further tools for gas turbines and turbomachinery are in development. Stay tuned.</p>
-  </div>
- </section>
+<section id="turbonexus">
+<div class="num">02 · In development</div>
+<h2>TurboNexus: an AI engineering agent for CAD</h2>
+<p class="lead">A design change described in words, carried out on the model, with the old and the new version and the bill-of-materials difference in front of the engineer who approves it.</p>
+<video class="teaser" controls preload="none" playsinline poster="turbonexus-poster.jpg">
+<source src="turbonexus-teaser.mp4" type="video/mp4">
+</video>
+<ul class="pts">
+<li><b>No CAD licence needed</b>Reads STEP assemblies and shows them in an offline 3D viewer.</li>
+<li><b>One core</b>Works on top of commercial and open-source CAD systems.</li>
+<li><b>Old, new, BOM</b>Applies the change, keeps both versions side by side and reports what changed.</li>
+<li><b>Inside the perimeter</b>Design data does not leave the customer. Drafts only: approval stays with the engineer.</li>
+</ul>
+<p class="note">The video shows a prototype run on a real assembly: an access platform taken from 8 to 10 steps (deck 2254 → 2754 mm, base 2860 → 3462 mm, eight BOM positions changed). Strength and stability checks of the variant are not part of the example.</p>
+<p class="lead" style="margin-top:18px">Interested in a pilot? <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus%20pilot">turbotechnologies@email.cz</a></p>
+</section>
 
- <section id="contact" style="border:0">
-  <h2>Contact</h2>
-  <p>Turbo Technologies s.r.o., Prague, Czech Republic · since 2011</p>
-  <p>Email: <a href="mailto:turbotechnologies@email.cz">turbotechnologies@email.cz</a></p>
- </section>
+<section>
+<div class="next">
+<h2>More is coming</h2>
+<p>Further tools for gas turbines and turbomachinery are in development. Stay tuned.</p>
+</div>
+</section>
+
+<section id="contact" style="border:0">
+<h2>Contact</h2>
+<p>Turbo Technologies s.r.o., Prague, Czech Republic · since 2011</p>
+<p>Email: <a href="mailto:turbotechnologies@email.cz">turbotechnologies@email.cz</a></p>
+</section>
 </main>
 <footer><div class="wrap">© 2026 Turbo Technologies s.r.o.</div></footer>
 <script data-goatcounter="https://turbotech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
