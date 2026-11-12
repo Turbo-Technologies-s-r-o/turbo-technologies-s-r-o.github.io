@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TurboNexus: secondary air network on a section | Turbo Technologies</title>
+<meta name="description" content="Interactive demonstration: a 150-element secondary air network laid on a section cut from STEP geometry. Synthetic data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFCFD; --stage-a:#EEF2F6; --stage-b:#DCE3EA; --ink:#17212B; --steel:#55636F; --mist:#8A97A3;
+  --rule:#D5DCE3; --petrol:#0C6577; --petrol-soft:#E3F0F2; --select:#F2A900;
+  --orifice:#2B7BB9; --seal:#C8445A; --channel:#2F9475;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.app{display:grid;height:100%;grid-template-columns:248px minmax(0,1fr) 332px;grid-template-rows:52px minmax(0,1fr) 30px}
+.top{grid-column:1/-1;display:flex;align-items:center;gap:18px;padding:0 18px;border-bottom:1px solid var(--rule);background:#fff}
+.mark{font:600 19px/1 "IBM Plex Sans Condensed",sans-serif;letter-spacing:.01em;white-space:nowrap}
+.mark span{color:var(--petrol)}
+.crumb{color:var(--steel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb b{color:var(--ink);font-weight:500}
+.by{color:var(--steel);text-decoration:none;white-space:nowrap;border-left:1px solid var(--rule);padding-left:14px}
+.by:hover{color:var(--petrol)}
+.top .sp{flex:1}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:6px 12px;cursor:pointer;border-left:1px solid var(--rule);white-space:nowrap}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.left{border-right:1px solid var(--rule);background:#fff;overflow:auto;padding:14px 16px 18px}
+.right{border-left:1px solid var(--rule);background:#fff;overflow:auto}
+h2{font:600 15px/1.2 "IBM Plex Sans Condensed",sans-serif;margin:0 0 8px;letter-spacing:.01em}
+.block{margin-bottom:20px}
+.chk{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}
+.chk input{accent-color:var(--petrol);margin:0}
+.chk .n{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chk .c{color:var(--mist);font-variant-numeric:tabular-nums}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.seg.col{display:grid;grid-template-columns:1fr 1fr;width:100%}
+.seg.col button{border-left:0;border-top:1px solid var(--rule);padding:6px 4px}
+.seg.col button:nth-child(-n+2){border-top:0}
+.seg.col button:nth-child(even){border-left:1px solid var(--rule)}
+#q{width:100%;padding:7px 9px;border:1px solid var(--rule);border-radius:7px;background:var(--paper)}
+#hits{margin-top:6px;max-height:190px;overflow:auto}
+.hit span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hit{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:none;padding:4px 6px;border-radius:5px;cursor:pointer}
+.hit:hover{background:var(--petrol-soft)}
+.hit i{font-style:normal;color:var(--mist);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage{position:relative;background:linear-gradient(180deg,var(--stage-a),var(--stage-b));min-width:0;min-height:0}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas.drag{cursor:grabbing}
+.legend{position:absolute;left:16px;bottom:14px;background:rgba(255,255,255,.92);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;min-width:210px}
+.legend .t{font-weight:500;margin-bottom:6px}
+.ramp{height:8px;border-radius:4px}
+.rl{display:flex;justify-content:space-between;color:var(--steel);font-size:12px;margin-top:3px;font-variant-numeric:tabular-nums}
+.keys{display:flex;gap:12px;font-size:13px}.keys span{display:flex;align-items:center;gap:5px}.keys i{width:16px;height:4px;border-radius:2px;display:inline-block}
+.marks{margin-top:7px;padding-top:7px;border-top:1px solid var(--rule);color:var(--steel);font-size:12px;display:flex;gap:12px;flex-wrap:wrap}
+.marks span{display:flex;align-items:center;gap:5px}
+.hintbar{grid-column:1/-1;display:flex;align-items:center;gap:18px;padding:0 18px;border-top:1px solid var(--rule);background:#fff;color:var(--steel);font-size:12.5px;white-space:nowrap;overflow:hidden}
+.hintbar .sp{flex:1}
+.pad{padding:16px 18px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--rule)}
+.sum div{padding:13px 0 12px 18px;border-left:1px solid var(--rule)}
+.sum div:first-child{border-left:0}
+.sum b{display:block;font:600 24px/1 "IBM Plex Sans Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.sum span{color:var(--steel);font-size:12.5px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;width:100%;border:0;background:none;text-align:left;padding:5px 6px;margin:0 -6px;border-radius:6px;cursor:pointer}
+.bar:hover{background:var(--petrol-soft)}
+.bar .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .v{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--steel)}
+.bar .tr{grid-column:1/-1;height:5px;border-radius:3px;background:#EDF1F4;overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:3px;background:var(--petrol)}
+.bar.src .tr i{background:#7C8A97}
+.checks{list-style:none;margin:0;padding:0}
+.checks li{display:flex;gap:9px;padding:5px 0;border-top:1px solid var(--rule)}
+.checks li:first-child{border-top:0}
+.ok,.warn{flex:none;width:18px;height:18px;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-weight:600;color:#fff;margin-top:1px}
+.ok{background:var(--channel)}.warn{background:#C98A00}
+.back{border:0;background:none;color:var(--petrol);padding:0;cursor:pointer;margin-bottom:10px}
+.title{font:600 21px/1.15 "IBM Plex Sans Condensed",sans-serif;margin:0 0 4px}
+.kind{color:var(--steel);margin-bottom:14px}
+.kind i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.big{font:600 34px/1 "IBM Plex Sans Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.big small{font:400 14px "IBM Plex Sans",sans-serif;color:var(--steel);margin-left:6px}
+.drop{margin:16px 0 6px;display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end}
+.drop .end{font-variant-numeric:tabular-nums}
+.drop .end b{display:block;font:600 19px/1.1 "IBM Plex Sans Condensed",sans-serif}
+.drop .end span{color:var(--steel);font-size:12.5px;display:block;line-height:1.3}
+.drop .end:last-child{text-align:right}
+.drop .ar{color:var(--mist);padding-bottom:4px}
+.dbar{height:8px;border-radius:4px;margin-bottom:14px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:0}
+dt{color:var(--steel)}dd{margin:0;font-variant-numeric:tabular-nums}
+.conn{margin-top:16px}
+.note{color:var(--steel);font-size:12.5px;border-top:1px solid var(--rule);padding:12px 18px}
+#msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--steel)}
+@media (max-width:1050px){.app{grid-template-columns:210px minmax(0,1fr) 280px}}
+@media (max-width:820px){
+  html,body{height:auto}
+  .app{display:flex;flex-direction:column;height:auto;min-height:100vh}
+  .top{order:0;flex-wrap:wrap;height:auto;padding:8px 12px;gap:8px}
+  .top .sp{display:none}.crumb{display:none}
+  #views{max-width:100%;overflow-x:auto}#views button{padding:7px 10px}
+  .stage{order:1;height:60vh;min-height:330px;flex:none}
+  .right{order:2;border:0;border-top:1px solid var(--rule);overflow:visible}
+  .left{order:3;border:0;border-top:1px solid var(--rule);overflow:visible}
+  .hintbar{order:4;white-space:normal;flex-wrap:wrap;padding:8px 12px;gap:4px 12px;height:auto}
+  .legend{left:8px;bottom:8px;min-width:0;padding:6px 9px}.legend .marks{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a class="mark" href="./#turbonexus" style="text-decoration:none;color:inherit">Turbo<span>Nexus</span></a>
+    <div class="crumb">Secondary air <b id="mname"></b></div>
+    <a class="by" href="./">by Turbo Technologies</a>
+    <div class="sp"></div>
+    <div class="seg" id="views" role="group" aria-label="View">
+      <button data-v="full">Full model</button><button data-v="cut" aria-pressed="true">Cut by Nexus</button><button data-v="sec">Face on</button><button data-v="tur">Turbine</button><button data-v="bl">Blade matrix</button>
+    </div>
+  </div>
+  <aside class="left">
+    <div class="block"><h2>Find an element</h2><input id="q" type="search" placeholder="seal, pre-swirl, pipe A" autocomplete="off"><div id="hits"></div></div>
+    <div class="block"><h2>Colour the network by</h2>
+      <div class="seg col" id="modes" role="group"><button data-m="p" aria-pressed="true">Pressure</button><button data-m="t">Temperature</button><button data-m="f">Flow share</button><button data-m="k">Element type</button></div></div>
+    <div class="block"><h2>Section</h2>
+      <label class="chk"><input type="checkbox" id="sOn" checked><span class="n">Cut the model with a plane</span></label>
+      <div style="display:flex;gap:8px;align-items:center;margin:6px 0"><div class="seg" id="sAx" role="group" aria-label="Plane normal"><button data-a="0">X</button><button data-a="1" aria-pressed="true">Y</button><button data-a="2">Z</button></div>
+      <label class="chk" style="margin-left:4px"><input type="checkbox" id="sFlip" checked><span class="n">Flip</span></label></div>
+      <input type="range" id="sPos" min="0" max="1000" value="500" style="width:100%;accent-color:var(--petrol)" aria-label="Plane position"><div id="sVal" style="color:var(--steel);font-size:12.5px"></div></div>
+    <div class="block"><h2>Network</h2><div id="lNet"></div></div>
+    <div class="block"><h2>Geometry</h2><div id="lGeo"></div><label class="chk" style="margin-top:6px"><input type="checkbox" id="edges" checked><span class="n">Edges</span></label></div>
+  </aside>
+  <div class="stage" id="stage"><canvas id="cv"></canvas><div id="msg">Loading the model</div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <aside class="right" id="insp"></aside>
+  <div class="hintbar"><span>Drag to rotate, right-drag or Shift to pan, scroll to zoom, click a line or a node</span><span class="sp"></span><span id="prov"></span></div>
+</div>
+<script src="nexus-sas-demo-data.js"></script>
+<script>
+"use strict";
+(function(){
+const META=window.TN_META, NET=META.network, msg=document.getElementById('msg');
+const cv=document.getElementById('cv'), gl=cv.getContext('webgl2',{antialias:true,stencil:true});
+if(!gl){msg.textContent='This browser has no WebGL2, so the 3D view cannot open.';return}
+const bs=atob(window.TN_MESH), u8=new Uint8Array(bs.length); for(let i=0;i<bs.length;i++)u8[i]=bs.charCodeAt(i); const bin=u8.buffer; window.TN_MESH=null;
+document.getElementById('mname').textContent='/ '+META.title;
+document.getElementById('prov').textContent=`Geometry read from ${META.step.file} by the TurboNexus STEP reader: ${META.step.solids} solids, ${META.step.faces} faces, ${META.step.failed} failed. Network and values are synthetic. © 2026 Turbo Technologies s.r.o.`;
+// ---- math
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],scl=(a,s)=>[a[0]*s,a[1]*s,a[2]*s],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],nrm=a=>{const l=Math.hypot(...a)||1;return a.map(x=>x/l)};
+function mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s}return o}
+function persp(fy,as,n,f){const t=1/Math.tan(fy/2),o=new Float32Array(16);o[0]=t/as;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);return o}
+function look(e,c){const z=nrm(sub(e,c)),x=nrm(cross([0,0,1],z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,e),-dot(y,e),-dot(z,e),1])}
+// ---- GL
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+const P=gl.createProgram();
+gl.attachShader(P,sh(gl.VERTEX_SHADER,`#version 300 es
+layout(location=0) in vec3 aPos;layout(location=1) in vec3 aNrm;uniform mat4 uVP;out vec3 vW,vN;
+void main(){vW=aPos;vN=aNrm;gl_Position=uVP*vec4(aPos,1.0);}`));
+gl.attachShader(P,sh(gl.FRAGMENT_SHADER,`#version 300 es
+precision highp float;in vec3 vW,vN;uniform vec3 uC,uEye;uniform int uMode;uniform float uId,uFlat;uniform vec4 uClip;out vec4 o;
+void main(){
+ if(dot(vec4(vW,1.0),uClip)>0.0)discard;
+ if(uMode==3){float h=step(0.82,fract((vW.x+vW.y+vW.z)*0.11));o=vec4(uC*(0.80-0.10*h),1.0);return;}
+ if(uMode==1){float id=uId+1.0;o=vec4(mod(id,256.0),mod(floor(id/256.0),256.0),floor(id/65536.0),255.0)/255.0;return;}
+ if(uMode==2){o=vec4(uC,0.42);return;}
+ vec3 n=normalize(vN),v=normalize(uEye-vW);if(dot(n,v)<0.0)n=-n;
+ vec3 L1=normalize(vec3(.35,-.75,.6)),L2=normalize(vec3(-.6,.3,.4));
+ float d=.50+.42*max(dot(n,L1),0.)+.16*max(dot(n,L2),0.)+.06*max(n.z,0.);
+ d=mix(d,0.92+0.08*max(dot(n,v),0.),uFlat);
+ o=vec4(uC*d+(1.0-uFlat)*pow(max(dot(reflect(-L1,n),v),0.),28.)*.10,1.);}`));
+gl.linkProgram(P);gl.useProgram(P);
+const U=n=>gl.getUniformLocation(P,n),uVP=U('uVP'),uC=U('uC'),uEye=U('uEye'),uMode=U('uMode'),uId=U('uId'),uFlat=U('uFlat'),uClip=U('uClip');
+const B=(t,d)=>{const b=gl.createBuffer();gl.bindBuffer(t,b);gl.bufferData(t,d,gl.STATIC_DRAW);return b};
+const QM=65535, items=[]; // one drawable per instance (all identity in this model)
+let bbMin=[1e9,1e9,1e9],bbMax=[-1e9,-1e9,-1e9];
+const byKey={};
+META.inst.forEach(([k,m,path],id)=>{
+  const p=META.parts[k], q=new Uint16Array(bin,p.v[0],p.v[1]*3), pos=new Float32Array(q.length);
+  for(let i=0;i<q.length;i++){const a=i%3;pos[i]=p.lo[a]+q[i]*p.sc[a]}
+  const idx=p.i[2]===2?new Uint16Array(bin,p.i[0],p.i[1]):new Uint32Array(bin,p.i[0],p.i[1]);
+  const n=new Float32Array(pos.length);
+  for(let t=0;t<idx.length;t+=3){const a=idx[t]*3,b=idx[t+1]*3,c=idx[t+2]*3;const ux=pos[b]-pos[a],uy=pos[b+1]-pos[a+1],uz=pos[b+2]-pos[a+2],wx=pos[c]-pos[a],wy=pos[c+1]-pos[a+1],wz=pos[c+2]-pos[a+2];
+    const nx=uy*wz-uz*wy,ny=uz*wx-ux*wz,nz=ux*wy-uy*wx;for(const j of[a,b,c]){n[j]+=nx;n[j+1]+=ny;n[j+2]+=nz}}
+  const vao=gl.createVertexArray();gl.bindVertexArray(vao);
+  gl.bindBuffer(gl.ARRAY_BUFFER,B(gl.ARRAY_BUFFER,pos));gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+  gl.bindBuffer(gl.ARRAY_BUFFER,B(gl.ARRAY_BUFFER,n));gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+  B(gl.ELEMENT_ARRAY_BUFFER,idx.slice());
+  const it={id,k,group:path[1],pos,idx,name:p.name,vao,n:idx.length,type:p.i[2]===2?gl.UNSIGNED_SHORT:gl.UNSIGNED_INT,col:p.color||[.8,.8,.8],net:k[0]==='e'||k[0]==='n',vis:true,
+    c:[p.lo[0]+p.sc[0]*QM/2,p.lo[1]+p.sc[1]*QM/2,p.lo[2]+p.sc[2]*QM/2]};
+  if(p.e[1]){const qe=new Uint16Array(bin,p.e[0],p.e[1]*3),e=new Float32Array(qe.length);for(let i=0;i<qe.length;i++){const a=i%3;e[i]=p.lo[a]+qe[i]*p.sc[a]}
+    it.ev=gl.createVertexArray();gl.bindVertexArray(it.ev);gl.bindBuffer(gl.ARRAY_BUFFER,B(gl.ARRAY_BUFFER,e));gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.vertexAttrib3f(1,0,0,1);it.ne=p.e[1]}
+  if(k[0]==='g'&&path[1]===undefined)it.group='Geometry';
+  if(!it.net)for(let a=0;a<3;a++){bbMin[a]=Math.min(bbMin[a],p.lo[a]);bbMax[a]=Math.max(bbMax[a],p.lo[a]+p.sc[a]*QM)}
+  items.push(it); byKey[k]=it;
+});
+gl.bindVertexArray(null);
+const center=scl(add(bbMin,bbMax),.5), R=Math.hypot(...sub(bbMax,bbMin))/2;
+// ---- network data and colours
+const E=NET.elements, Nd=NET.nodes, nodeBy={}; Nd.forEach(n=>nodeBy[n.id]=n);
+const lerp=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t), ramp=(st,t)=>{t=Math.max(0,Math.min(1,t));const k=t*(st.length-1),i=Math.min(st.length-2,Math.floor(k));return lerp(st[i],st[i+1],k-i)};
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255), css=c=>'rgb('+c.map(x=>Math.round(x*255)).join(',')+')';
+const RP=['#7FD0DC','#3D9BD1','#3A5FC0','#7C3FA8','#C2337A','#D8432E'].map(hex), RT=['#3F7FC4','#69B5C9','#E9D08A','#E59A4A','#C9541E'].map(hex), RF=['#C9D3DB','#8FB6C2','#3F8FA3','#0C6577','#093A47'].map(hex);
+const KC={orifice:hex('#2B7BB9'),seal:hex('#C8445A'),channel:hex('#2F9475')};
+const pAll=Nd.map(n=>n.p), pMin=Math.min(...pAll), pMax=Math.max(...pAll), tAll=E.map(e=>e.T), tMin=Math.min(...tAll), tMax=Math.max(...tAll), fAll=E.map(e=>e.share), fMin=Math.min(...fAll), fMax=Math.max(...fAll);
+const cP=p=>ramp(RP,Math.log(p/pMin)/Math.log(pMax/pMin)), cT=T=>ramp(RT,(T-tMin)/(tMax-tMin)), cF=f=>ramp(RF,Math.log(f/fMin)/Math.log(fMax/fMin));
+let mode='p', sel=null, typeOn={orifice:true,seal:true,channel:true};
+const SEL=hex('#F2A900');
+function paint(){
+  E.forEach(e=>{const it=byKey[e.k]; it.col=mode==='p'?cP(e.pu):mode==='t'?cT(e.T):mode==='f'?cF(e.share):KC[e.type]; it.vis=layer.elements&&typeOn[e.type]});
+  Nd.forEach(n=>{const it=byKey[n.k]; it.col=n.b?[.99,.99,.99]:(mode==='t'?cT(Math.min(tMax,Math.max(tMin,n.T))):cP(n.p)); it.vis=n.b?layer.boundaries:layer.cavities});
+  if(sel)byKey[sel.k].col=SEL;
+  legend(); draw();
+}
+function legend(){
+  const L=document.getElementById('legend'); const g=st=>'linear-gradient(90deg,'+st.map(css).join(',')+')';
+  const marks='<div class="marks"><span><svg width="12" height="12"><circle cx="6" cy="6" r="4.5" fill="#3A5FC0"/></svg>cavity</span><span><svg width="12" height="12"><rect x="2" y="2" width="8" height="8" fill="#fff" stroke="#55636F" stroke-width="1.4"/></svg>boundary</span><span>thickness = mass flow</span></div>';
+  if(mode==='k')L.innerHTML='<div class="t">Element type</div><div class="keys"><span><i style="background:var(--orifice)"></i>orifice</span><span><i style="background:var(--seal)"></i>seal</span><span><i style="background:var(--channel)"></i>channel</span></div>'+marks;
+  else{const [t,st,a,b]=mode==='p'?['Upstream pressure, kPa',RP,Math.round(pMin),Math.round(pMax)]:mode==='t'?['Air temperature, K',RT,Math.round(tMin),Math.round(tMax)]:['Share of secondary air, %',RF,fMin.toFixed(2),fMax.toFixed(0)];
+    L.innerHTML=`<div class="t">${t}</div><div class="ramp" style="background:${g(st)}"></div><div class="rl"><span>${a}</span><span>${mode==='t'?'':'log scale'}</span><span>${b}</span></div>`+marks}
+}
+// ---- layers
+const layer={elements:true,cavities:true,boundaries:true}, geoOn={}, lNet=document.getElementById('lNet'), lGeo=document.getElementById('lGeo');
+function chk(parent,label,count,on,fn,dot){const l=document.createElement('label');l.className='chk';const c=document.createElement('input');c.type='checkbox';c.checked=on;c.onchange=()=>fn(c.checked);
+  l.appendChild(c);if(dot){const d=document.createElement('span');d.className='dot';d.style.background=dot;l.appendChild(d)}
+  const n=document.createElement('span');n.className='n';n.textContent=label;const k=document.createElement('span');k.className='c';k.textContent=count;l.append(n,k);parent.appendChild(l)}
+const cnt=t=>E.filter(e=>e.type===t).length;
+chk(lNet,'Orifices',cnt('orifice'),true,v=>{typeOn.orifice=v;paint()},'var(--orifice)');
+chk(lNet,'Seals',cnt('seal'),true,v=>{typeOn.seal=v;paint()},'var(--seal)');
+chk(lNet,'Channels',cnt('channel'),true,v=>{typeOn.channel=v;paint()},'var(--channel)');
+chk(lNet,'Cavities',Nd.filter(n=>!n.b).length,true,v=>{layer.cavities=v;paint()});
+chk(lNet,'Boundaries',Nd.filter(n=>n.b).length,true,v=>{layer.boundaries=v;paint()});
+const groups=[...new Set(items.filter(i=>!i.net).map(i=>i.group))];
+groups.forEach(g=>{geoOn[g]=true;chk(lGeo,g,items.filter(i=>i.group===g).length,true,v=>{geoOn[g]=v;draw()})});
+let showEdges=true; document.getElementById('edges').onchange=e=>{showEdges=e.target.checked;draw()};
+// ---- camera
+const FOV=32*Math.PI/180, cam={tgt:center.slice(),dist:R/Math.sin(FOV/2)*1.02,az:-0.95,el:0.42};
+const eye=()=>{const ce=Math.cos(cam.el);return add(cam.tgt,scl([ce*Math.cos(cam.az),ce*Math.sin(cam.az),Math.sin(cam.el)],cam.dist))};
+function fitDist(hw,hh){const as=cv.width/cv.height,t=Math.tan(FOV/2);return Math.max(hh/t,hw/(t*as))*1.06}
+const VIEWS={full:()=>({tgt:center.slice(),dist:fitDist(R*.98,R*.86),az:-0.95,el:0.42,sec:false}),cut:()=>({tgt:[505,-60,60],dist:fitDist(520,330),az:-1.12,el:0.3,sec:true}),sec:()=>({tgt:[505,0,212],dist:fitDist(475,222),az:-Math.PI/2,el:0.0001,sec:true}),
+  tur:()=>({tgt:[800,0,225],dist:fitDist(165,175),az:-Math.PI/2+0.2,el:0.1,sec:true}),bl:()=>({tgt:[741,0,290],dist:fitDist(50,50),az:-Math.PI/2,el:0.0001,sec:true})};
+let anim=null;
+function fly(to,ms=420){const from={tgt:cam.tgt.slice(),dist:cam.dist,az:cam.az,el:cam.el},t0=performance.now();cancelAnimationFrame(anim);
+  let daz=to.az-from.az;daz=Math.atan2(Math.sin(daz),Math.cos(daz));
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)ms=1;
+  (function step(now){const u=Math.min(1,(now-t0)/ms),q=u*u*(3-2*u);cam.tgt=lerp(from.tgt,to.tgt,q);cam.dist=from.dist+(to.dist-from.dist)*q;cam.az=from.az+daz*q;cam.el=from.el+(to.el-from.el)*q;render(0);if(u<1)anim=requestAnimationFrame(step)})(t0)}
+document.querySelectorAll('#views button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#views button').forEach(x=>x.setAttribute('aria-pressed',x===b));const v=VIEWS[b.dataset.v]();setSection(v.sec?{on:true,axis:1,t:0.5,flip:true}:{on:false});fly(v)});
+// ---- section by plane (with caps)
+const S={on:true,axis:1,t:0.5,flip:true}, capQuad={vao:gl.createVertexArray(),buf:gl.createBuffer()};
+gl.bindVertexArray(capQuad.vao);gl.bindBuffer(gl.ARRAY_BUFFER,capQuad.buf);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.vertexAttrib3f(1,0,0,1);gl.bindVertexArray(null);
+const planeV=()=>bbMin[S.axis]+(bbMax[S.axis]-bbMin[S.axis])*S.t;
+function clipVec(){if(!S.on)return [0,0,0,-1];const n=[0,0,0,0],v=planeV();if(S.flip){n[S.axis]=-1;n[3]=v}else{n[S.axis]=1;n[3]=-v}return n}
+function slice(){
+  const a=S.axis,v=planeV(),b=(a+1)%3,c=(a+2)%3,piv=[0,0,0];piv[a]=v;piv[b]=center[b];piv[c]=center[c];
+  for(const it of items){if(it.net)continue;const P=it.pos,I=it.idx,out=[];
+    for(let t=0;t<I.length;t+=3){const i0=I[t]*3,i1=I[t+1]*3,i2=I[t+2]*3,d0=P[i0+a]-v,d1=P[i1+a]-v,d2=P[i2+a]-v;
+      if((d0>0)===(d1>0)&&(d1>0)===(d2>0))continue;const pts=[];
+      const cut=(p,q,dp,dq)=>{if((dp>0)!==(dq>0)){const u=dp/(dp-dq);pts.push(P[p]+(P[q]-P[p])*u,P[p+1]+(P[q+1]-P[p+1])*u,P[p+2]+(P[q+2]-P[p+2])*u)}};
+      cut(i0,i1,d0,d1);cut(i1,i2,d1,d2);cut(i2,i0,d2,d0);if(pts.length===6)out.push(piv[0],piv[1],piv[2],pts[0],pts[1],pts[2],pts[3],pts[4],pts[5])}
+    if(!out.length){it.cap=null;continue}
+    if(!it.cap){it.cap={vao:gl.createVertexArray(),buf:gl.createBuffer()};gl.bindVertexArray(it.cap.vao);gl.bindBuffer(gl.ARRAY_BUFFER,it.cap.buf);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.vertexAttrib3f(1,0,0,1)}
+    gl.bindBuffer(gl.ARRAY_BUFFER,it.cap.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(out),gl.DYNAMIC_DRAW);it.cap.n=out.length/3}
+  const q=[],m=R*3,pt=(sb,sc)=>{const p=[0,0,0];p[a]=v;p[b]=center[b]+sb*m;p[c]=center[c]+sc*m;q.push(...p)};pt(-1,-1);pt(1,-1);pt(1,1);pt(-1,-1);pt(1,1);pt(-1,1);
+  gl.bindBuffer(gl.ARRAY_BUFFER,capQuad.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q),gl.DYNAMIC_DRAW);gl.bindVertexArray(null);
+}
+function setSection(o){Object.assign(S,o);document.getElementById('sOn').checked=S.on;document.getElementById('sFlip').checked=S.flip;document.getElementById('sPos').value=Math.round(S.t*1000);
+  document.querySelectorAll('#sAx button').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.a===S.axis));
+  document.getElementById('sVal').textContent=S.on?('Plane '+'XYZ'[S.axis]+' = '+planeV().toFixed(0)+' mm'):'The model is shown whole';if(S.on)slice();draw()}
+document.getElementById('sOn').onchange=e=>setSection({on:e.target.checked});document.getElementById('sFlip').onchange=e=>setSection({flip:e.target.checked});
+document.getElementById('sPos').oninput=e=>setSection({on:true,t:e.target.value/1000});
+document.querySelectorAll('#sAx button').forEach(b=>b.onclick=()=>setSection({on:true,axis:+b.dataset.a,t:0.5}));
+// ---- render
+function resize(){const d=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect();cv.width=Math.max(2,Math.round(r.width*d));cv.height=Math.max(2,Math.round(r.height*d));draw()}
+let pend=false;function draw(){if(!pend){pend=true;requestAnimationFrame(()=>{pend=false;render(0)})}}
+function visible(it){return it.net?it.vis:geoOn[it.group]}
+function render(m){
+  const e=eye(),VP=mul(persp(FOV,cv.width/cv.height,Math.max(cam.dist/200,.5),cam.dist+R*4),look(e,cam.tgt));
+  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT|gl.STENCIL_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.disable(gl.BLEND);
+  gl.uniformMatrix4fv(uVP,false,VP);gl.uniform3fv(uEye,e);gl.uniform1i(uMode,m);const CL=clipVec(),NOC=[0,0,0,-1];gl.enable(gl.POLYGON_OFFSET_FILL);gl.polygonOffset(1,1);
+  for(const it of items){if(!visible(it))continue;if(m===1&&!it.net)continue;gl.uniform4fv(uClip,it.net?NOC:CL);gl.uniform3fv(uC,it.col);gl.uniform1f(uId,it.id);gl.uniform1f(uFlat,it.net?0.75:0);gl.bindVertexArray(it.vao);gl.drawElements(gl.TRIANGLES,it.n,it.type,0)}
+  if(m===0&&S.on){ // section caps: even-odd fill of each solid's cut outline in the stencil buffer, then paint the plane
+    gl.uniform4fv(uClip,NOC);gl.enable(gl.STENCIL_TEST);
+    for(const it of items){if(it.net||!it.cap||!geoOn[it.group])continue;
+      gl.colorMask(false,false,false,false);gl.depthMask(false);gl.disable(gl.DEPTH_TEST);gl.stencilFunc(gl.ALWAYS,0,255);gl.stencilOp(gl.KEEP,gl.KEEP,gl.INVERT);
+      gl.bindVertexArray(it.cap.vao);gl.drawArrays(gl.TRIANGLES,0,it.cap.n);
+      gl.colorMask(true,true,true,true);gl.depthMask(true);gl.enable(gl.DEPTH_TEST);gl.stencilFunc(gl.NOTEQUAL,0,255);gl.stencilOp(gl.ZERO,gl.ZERO,gl.ZERO);
+      gl.uniform1i(uMode,3);gl.uniform3fv(uC,it.col);gl.bindVertexArray(capQuad.vao);gl.drawArrays(gl.TRIANGLES,0,6);gl.uniform1i(uMode,0)}
+    gl.disable(gl.STENCIL_TEST)}
+  gl.disable(gl.POLYGON_OFFSET_FILL);
+  if(m===0&&showEdges){gl.uniform1i(uMode,2);gl.uniform3f(uC,.22,.27,.33);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);
+    gl.uniform4fv(uClip,CL);for(const it of items){if(it.net||!it.ev||!geoOn[it.group])continue;gl.bindVertexArray(it.ev);gl.drawArrays(gl.LINES,0,it.ne)}gl.depthMask(true);gl.disable(gl.BLEND)}
+  gl.bindVertexArray(null);
+}
+let fbo=null,fw=0,fh=0;
+function pick(x,y){
+  if(!fbo||fw!==cv.width||fh!==cv.height){fw=cv.width;fh=cv.height;fbo=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,fbo);const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,fw,fh,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);const rb=gl.createRenderbuffer();gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,fw,fh);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,rb)}
+  gl.bindFramebuffer(gl.FRAMEBUFFER,fbo);render(1);let best=-1;const r=3,px=new Uint8Array((2*r+1)*(2*r+1)*4);
+  gl.readPixels(Math.max(0,x-r),Math.max(0,fh-y-1-r),2*r+1,2*r+1,gl.RGBA,gl.UNSIGNED_BYTE,px);gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  let bd=1e9;for(let j=0;j<=2*r;j++)for(let i=0;i<=2*r;i++){const o=(j*(2*r+1)+i)*4,id=px[o]+px[o+1]*256+px[o+2]*65536-1;if(id>=0){const d=(i-r)*(i-r)+(j-r)*(j-r);if(d<bd){bd=d;best=id}}}
+  render(0);return best}
+// ---- inspector
+const insp=document.getElementById('insp'), pct=v=>(v>=10?v.toFixed(1):v.toFixed(2))+' %';
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+function barRow(name,share,max,cls,fn){const b=el('button','bar '+(cls||''));b.innerHTML=`<span class="nm"></span><span class="v">${pct(share)}</span><span class="tr"><i style="width:${Math.max(1.5,share/max*100)}%"></i></span>`;b.querySelector('.nm').textContent=name;b.onclick=fn;return b}
+function overview(){
+  insp.innerHTML='';
+  const s=el('div','sum',`<div><b>${E.length}</b><span>elements</span></div><div><b>${Nd.length}</b><span>nodes</span></div><div><b>${Nd.filter(n=>n.b).length}</b><span>boundaries</span></div>`);insp.appendChild(s);
+  const a=el('div','pad');a.appendChild(el('h2',null,'Where the air comes from'));const ms=Math.max(...NET.budget.sources.map(x=>x.share));
+  NET.budget.sources.forEach(x=>a.appendChild(barRow(x.name,x.share,ms,'src',()=>focusNodes(x.nodes))));
+  const h=el('h2',null,'Where it goes');h.style.marginTop='18px';a.appendChild(h);const mk=Math.max(...NET.budget.sinks.map(x=>x.share));
+  NET.budget.sinks.forEach(x=>a.appendChild(barRow(x.name,x.share,mk,'',()=>focusNodes(x.nodes))));
+  const h2=el('h2',null,'Checks');h2.style.marginTop='18px';a.appendChild(h2);const ul=el('ul','checks');
+  NET.checks.forEach(c=>{const li=el('li');li.innerHTML=`<span class="${c.ok?'ok':'warn'}">${c.ok?'✓':'!'}</span><span></span>`;li.lastChild.textContent=c.text;ul.appendChild(li)});a.appendChild(ul);insp.appendChild(a);
+  insp.appendChild(el('div','note','Shares are percentages of all air entering the network from its boundaries.'));
+}
+function focusNodes(ids){const pts=ids.map(i=>byKey[nodeBy[i].k].c);const c=scl(pts.reduce(add,[0,0,0]),1/pts.length);let r=30;pts.forEach(p=>r=Math.max(r,Math.hypot(...sub(p,c))));
+  setSection({on:true,axis:1,t:0.5,flip:true});fly({tgt:[c[0],0,c[2]],dist:fitDist(r*1.5,r*1.5),az:-Math.PI/2,el:0.0001})}
+function showElement(e){
+  insp.innerHTML='';const p=el('div','pad');const bk=el('button','back','‹ Air budget');bk.onclick=()=>select(null);p.appendChild(bk);
+  const t=el('h1','title');t.textContent=e.label;p.appendChild(t);
+  const k=el('div','kind',`<i style="background:var(--${e.type})"></i>${e.type[0].toUpperCase()+e.type.slice(1)}${e.choked?', choked':''}`);p.appendChild(k);
+  p.appendChild(el('div','big',`${pct(e.share)}<small>of secondary air</small>`));
+  const a=nodeBy[e.from],b=nodeBy[e.to];
+  const d=el('div','drop',`<button class="end back" style="margin:0;text-align:left"><b>${a.p.toFixed(0)} kPa</b><span></span></button><span class="ar">→</span><button class="end back" style="margin:0"><b>${b.p.toFixed(0)} kPa</b><span></span></button>`);
+  d.children[0].querySelector('span').textContent=a.label;d.children[2].querySelector('span').textContent=b.label;d.children[0].onclick=()=>select(a);d.children[2].onclick=()=>select(b);p.appendChild(d);
+  const bar=el('div','dbar');bar.style.background=`linear-gradient(90deg,${css(cP(a.p))},${css(cP(b.p))})`;p.appendChild(bar);
+  const dl=el('dl');dl.innerHTML=`<dt>Pressure ratio</dt><dd>${(b.p/a.p).toFixed(3)}</dd><dt>Pressure drop</dt><dd>${(a.p-b.p).toFixed(1)} kPa</dd><dt>Air temperature</dt><dd>${e.T} K</dd><dt>Rank by flow</dt><dd>${e.rank} of ${E.length}</dd>`;p.appendChild(dl);
+  insp.appendChild(p);
+}
+function showNode(n){
+  insp.innerHTML='';const p=el('div','pad');const bk=el('button','back','‹ Air budget');bk.onclick=()=>select(null);p.appendChild(bk);
+  const t=el('h1','title');t.textContent=n.label;p.appendChild(t);p.appendChild(el('div','kind',n.b?'Boundary, fixed pressure and temperature':'Cavity, pressure solved from mass balance'));
+  p.appendChild(el('div','big',`${n.p.toFixed(0)}<small>kPa</small>`));
+  const dl=el('dl');dl.style.marginTop='12px';const ins=E.filter(e=>e.to===n.id),outs=E.filter(e=>e.from===n.id),si=ins.reduce((s,e)=>s+e.share,0),so=outs.reduce((s,e)=>s+e.share,0);
+  dl.innerHTML=`<dt>Temperature</dt><dd>${n.T} K</dd><dt>Air in</dt><dd>${pct(si)}</dd><dt>Air out</dt><dd>${pct(so)}</dd>`;p.appendChild(dl);
+  const c=el('div','conn');const mx=Math.max(...ins.concat(outs).map(e=>e.share),1e-9);
+  if(ins.length){c.appendChild(el('h2',null,'Flows in'));ins.sort((x,y)=>y.share-x.share).forEach(e=>c.appendChild(barRow(e.label+', from '+nodeBy[e.from].label,e.share,mx,'src',()=>select(e))))}
+  if(outs.length){const h=el('h2',null,'Flows out');h.style.marginTop='14px';c.appendChild(h);outs.sort((x,y)=>y.share-x.share).forEach(e=>c.appendChild(barRow(e.label+', to '+nodeBy[e.to].label,e.share,mx,'',()=>select(e))))}
+  p.appendChild(c);insp.appendChild(p);
+}
+function select(o){sel=o;paint();if(!o)overview();else if(o.type)showElement(o);else showNode(o)}
+const byItem={};E.forEach(e=>byItem[byKey[e.k].id]=e);Nd.forEach(n=>byItem[byKey[n.k].id]=n);
+// ---- search
+const q=document.getElementById('q'),hits=document.getElementById('hits');
+q.oninput=()=>{hits.innerHTML='';const s=q.value.trim().toLowerCase();if(s.length<2)return;
+  E.filter(e=>(e.label+' '+e.type+' '+nodeBy[e.from].label+' '+nodeBy[e.to].label).toLowerCase().includes(s)).sort((a,b)=>b.share-a.share).slice(0,12).forEach(e=>{const b=el('button','hit');b.innerHTML='<span></span><i>'+pct(e.share)+'</i>';b.firstChild.textContent=e.label+', '+nodeBy[e.from].label.toLowerCase();b.onclick=()=>{select(e);focusNodes([e.from,e.to])};hits.appendChild(b)});
+  if(!hits.children.length)hits.appendChild(el('div',null,'<span style="color:var(--mist)">No element matches. Try a cavity or seal name.</span>'))};
+document.querySelectorAll('#modes button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('#modes button').forEach(x=>x.setAttribute('aria-pressed',x===b));paint()});
+// ---- input
+let dr=null;const ptrs=new Map();
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);dr={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,pan:e.button===2||e.shiftKey,mv:false};cv.classList.add('drag')});
+cv.addEventListener('pointermove',e=>{if(!dr)return;ptrs.set(e.pointerId,[e.clientX,e.clientY]);
+  if(ptrs.size===2){const [a,b]=[...ptrs.values()],d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(dr.pd)cam.dist*=dr.pd/d;dr.pd=d;dr.mv=true;draw();return}
+  const dx=e.clientX-dr.x,dy=e.clientY-dr.y;dr.x=e.clientX;dr.y=e.clientY;if(Math.hypot(e.clientX-dr.x0,e.clientY-dr.y0)>4)dr.mv=true;
+  if(dr.pan){const e0=eye(),f=nrm(sub(cam.tgt,e0)),r=nrm(cross(f,[0,0,1])),u=cross(r,f),k=2*cam.dist*Math.tan(FOV/2)/cv.clientHeight;cam.tgt=add(cam.tgt,add(scl(r,-dx*k),scl(u,dy*k)))}
+  else{cam.az-=dx*.007;cam.el=Math.max(-1.5,Math.min(1.5,cam.el+dy*.007))}draw()});
+cv.addEventListener('pointerup',e=>{ptrs.delete(e.pointerId);cv.classList.remove('drag');
+  if(dr&&!dr.mv&&ptrs.size===0){const r=cv.getBoundingClientRect(),d=cv.width/r.width,id=pick(Math.round((e.clientX-r.left)*d),Math.round((e.clientY-r.top)*d));select(id>=0?byItem[id]||null:null)}
+  if(ptrs.size===0)dr=null});
+cv.addEventListener('wheel',e=>{e.preventDefault();cam.dist=Math.max(R*.02,Math.min(R*12,cam.dist*Math.exp(e.deltaY*.0012)));draw()},{passive:false});
+addEventListener('keydown',e=>{if(e.key==='Escape')select(null)});
+new ResizeObserver(resize).observe(cv);
+msg.remove();resize();const v0=VIEWS.cut();Object.assign(cam,{tgt:v0.tgt,dist:v0.dist,az:v0.az,el:v0.el});setSection({});overview();paint();
+window.TN_API={setSection,fly,VIEWS,select,E,Nd,setMode:m=>{mode=m;paint()}};
+})();
+</script>
+</body>
+</html>

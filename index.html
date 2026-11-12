@@ -31,6 +31,7 @@ ul.pts b{display:block;color:var(--ink);font:600 17px Rubik,sans-serif;margin-bo
 .next{background:var(--ink);color:#F6F5F1;border-radius:16px;padding:36px}
 .next p{color:#C9D2E0;max-width:640px}
 video.teaser{display:block;width:100%;height:auto;margin-top:26px;border-radius:12px;border:1px solid var(--line);background:#16191d}
+img.shot{display:block;width:100%;height:auto;margin-top:26px;border-radius:12px;border:1px solid var(--line)}
 .note{color:var(--muted);font-size:15.5px;max-width:720px;margin-top:18px}
 footer{padding:36px 0;color:var(--muted);font-size:15px}
 </style>
@@ -67,6 +68,11 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <source src="turbonexus-beam.mp4" type="video/mp4">
 </video>
 <p class="note">Preliminary beam model with rigid joints; bolts, welds and handrails are not in it. It is a calculation note for the responsible engineer, not a strength approval.</p>
+<div class="num" style="margin-top:44px">Secondary air · In development</div>
+<p class="lead" style="margin-top:8px">The same viewer cuts a STEP model with a plane and lays a 1D secondary air network on the cut: where the air comes from, where it goes and at what pressure.</p>
+<a href="nexus-sas-demo.html"><img class="shot" src="nexus-sas-poster.jpg" alt="Section of a generic gas generator with a 150-element secondary air network drawn on the cut" loading="lazy"></a>
+<p class="lead" style="margin-top:14px"><a href="nexus-sas-demo.html">Open the live demonstration</a> and rotate it, move the section plane, click any line or cavity. Or read the <a href="turbonexus-secondary-air.pdf">four-page overview (PDF)</a>.</p>
+<p class="note">Synthetic 150-element network on an invented geometry, not an engine. Values are illustrative: a simplified solver, no rotation, no heat transfer.</p>
 <p class="lead" style="margin-top:18px">Interested in a pilot? <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus%20pilot">turbotechnologies@email.cz</a></p>
 </section>
 
@@ -79,6 +85,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
 <li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
 </ul>
+<p class="lead" style="margin-top:26px">See a network of this kind laid on an engine section: <a href="nexus-sas-demo.html">live demonstration in TurboNexus</a> (synthetic data).</p>
 <p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
 </section>
 
