@@ -50,7 +50,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 
 <main class="wrap">
 <section id="turbonexus">
-<div class="num">01 · In development</div>
+<div class="num">01</div>
 <h2>TurboNexus: an AI engineering agent for CAD</h2>
 <p class="lead">A design change described in words, carried out on the model, with the old and the new version and the bill-of-materials difference in front of the engineer who approves it.</p>
 <video class="teaser" controls preload="none" playsinline poster="turbonexus-poster.jpg">
@@ -63,22 +63,17 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <li><b>Inside the perimeter</b>Design data does not leave the customer. Drafts only: approval stays with the engineer.</li>
 </ul>
 <p class="note">The video shows a prototype run on a real assembly: an access platform taken from 8 to 10 steps (deck 2254 → 2754 mm, base 2860 → 3462 mm, eight BOM positions changed). Strength and stability checks of the variant are not part of the example.</p>
-<div class="num" style="margin-top:44px">Mechanical · In development</div>
+<div class="num" style="margin-top:44px">Mechanical</div>
 <video class="teaser" controls preload="none" playsinline poster="turbonexus-beam-poster.jpg">
 <source src="turbonexus-beam.mp4" type="video/mp4">
 </video>
 <p class="note">Preliminary beam model with rigid joints; bolts, welds and handrails are not in it. It is a calculation note for the responsible engineer, not a strength approval.</p>
-<div class="num" style="margin-top:44px">Secondary air · In development</div>
-<p class="lead" style="margin-top:8px">The same viewer cuts a STEP model with a plane and lays a 1D secondary air network on the cut: where the air comes from, where it goes and at what pressure.</p>
-<a href="nexus-sas-demo.html"><img class="shot" src="nexus-sas-poster.jpg" alt="Section of a generic gas generator with a 150-element secondary air network drawn on the cut" loading="lazy"></a>
-<p class="lead" style="margin-top:14px"><a href="nexus-sas-demo.html">Open the live demonstration</a> and rotate it, move the section plane, click any line or cavity. Or read the <a href="turbonexus-secondary-air.pdf">four-page overview (PDF)</a>.</p>
-<p class="note">Synthetic 150-element network on an invented geometry, not an engine. Values are illustrative: a simplified solver, no rotation, no heat transfer.</p>
-<div class="num" style="margin-top:44px">PDM · In development</div>
+<div class="num" style="margin-top:44px">PDM</div>
 <p class="lead" style="margin-top:8px">A parts register that the design agent keeps in step with the model: structure, revisions, and a change notice that waits for an engineer to close the checks before anything is released.</p>
 <a href="nexus-pdm-demo.html"><img class="shot" src="nexus-pdm-poster.jpg" alt="Change notice for an access platform: release route, open checks and affected parts" loading="lazy"></a>
 <p class="lead" style="margin-top:14px"><a href="nexus-pdm-demo.html">Open the live demonstration</a>: search the 113-item register, expand the structure, read the change notice “8 to 10 steps”.</p>
 <p class="note">The access platform is our own design. The release history, dates and roles are invented for the demonstration.</p>
-<p class="lead" style="margin-top:18px">Interested in a pilot? <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus%20pilot">turbotechnologies@email.cz</a></p>
+<p class="lead" style="margin-top:18px">Please do not hesitate to contact us for details: <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus">turbotechnologies@email.cz</a></p>
 </section>
 
 <section id="sas">
@@ -90,8 +85,10 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <li><b>Validated</b>Checked on engine networks of 200+ branches; consistent with Part 21 / CS-E tools.</li>
 <li><b>Thrust included</b>Rotor axial forces straight from the solved cavity pressures.</li>
 </ul>
-<p class="lead" style="margin-top:26px">See a network of this kind laid on an engine section: <a href="nexus-sas-demo.html">live demonstration in TurboNexus</a> (synthetic data).</p>
-<p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Use it with your own coefficients — free. Or try our calibrated coefficients: <b>2 hours free</b> (results on screen only), or a <b>€100 trial</b> — 2 calculations within 3 days, results saved. Project and annual licences on request: <a href="mailto:turbotechnologies@email.cz?subject=sasnet%20trial">turbotechnologies@email.cz</a></p>
+<a href="nexus-sas-demo.html"><img class="shot" style="margin-top:26px" src="nexus-sas-poster.jpg" alt="Section of a generic gas generator with a 150-element secondary air network drawn on the cut" loading="lazy"></a>
+<p class="lead" style="margin-top:14px">A network of this kind laid on a section cut by the TurboNexus viewer: <a href="nexus-sas-demo.html">open the live demonstration</a> and rotate it, move the section plane, click any line or cavity. Or read the <a href="turbonexus-secondary-air.pdf">four-page overview (PDF)</a>.</p>
+<p class="note">Synthetic 150-element network on an invented geometry, not an engine. Values are illustrative: a simplified solver, no rotation, no heat transfer.</p>
+<p class="lead" style="margin-top:26px">Open source (Apache-2.0): <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a>.<br>Please do not hesitate to contact us for details: <a href="mailto:turbotechnologies@email.cz?subject=sasnet">turbotechnologies@email.cz</a></p>
 </section>
 
 <section>
@@ -108,6 +105,79 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 </section>
 </main>
 <footer><div class="wrap">© 2026 Turbo Technologies s.r.o.</div></footer>
+<style>
+#tc-btn{position:fixed;right:18px;bottom:18px;z-index:50;background:var(--accent);color:#fff;border:0;border-radius:28px;padding:13px 20px;font:500 16px 'IBM Plex Sans',Arial,sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(20,33,61,.25)}
+#tc{position:fixed;right:18px;bottom:18px;z-index:51;width:370px;max-width:calc(100vw - 24px);height:540px;max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(20,33,61,.28);display:none;flex-direction:column;overflow:hidden;font-size:15.5px;line-height:1.45}
+#tc.open{display:flex}
+#tc header{background:var(--ink);color:#F6F5F1;padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
+#tc header b{font:600 16px Rubik,Arial,sans-serif}
+#tc header button{background:none;border:0;color:#C9D2E0;font-size:15px;cursor:pointer;padding:4px}
+#tc-log{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
+.tc-m{max-width:88%;padding:9px 13px;border-radius:14px;white-space:pre-wrap;word-break:break-word}
+.tc-b{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.tc-u{background:var(--ink);color:#F6F5F1;align-self:flex-end;border-bottom-right-radius:4px}
+.tc-c{display:flex;flex-wrap:wrap;gap:7px}
+.tc-c button,.tc-c a{border:1px solid var(--accent);background:var(--card);color:var(--accent);border-radius:20px;padding:6px 13px;font:inherit;cursor:pointer;text-decoration:none}
+.tc-c .tc-p{background:var(--accent);color:#fff}
+#tc form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:var(--card)}
+#tc textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit;height:44px;color:var(--ink);background:#fff}
+#tc form button{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:0 16px;font:inherit;cursor:pointer}
+#tc textarea:disabled{background:var(--bg)}
+#tc button:focus-visible,#tc-btn:focus-visible,#tc textarea:focus-visible,#tc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:520px){#tc{right:12px;bottom:12px}}
+</style>
+<button id="tc-btn" type="button">Ask about our tools</button>
+<div id="tc" role="dialog" aria-label="Contact assistant">
+<header><b>Turbo Technologies</b><button type="button" id="tc-x">Close</button></header>
+<div id="tc-log" aria-live="polite"></div>
+<form id="tc-f"><textarea id="tc-t" placeholder="Type your answer" aria-label="Your answer"></textarea><button type="submit">Send</button></form>
+</div>
+<script>
+(function(){
+var MAIL='turbotechnologies@email.cz';
+var $=function(i){return document.getElementById(i)},box=$('tc'),log=$('tc-log'),inp=$('tc-t'),btn=$('tc-btn');
+var T={
+ nexus:{label:'TurboNexus, AI agent for CAD',q:'Which CAD system do you work in?',o:['NX','CATIA / 3DEXPERIENCE','SolidWorks','Creo','FreeCAD','Other'],k:'CAD system'},
+ pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size'},
+ mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks'},
+ sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine'},
+ other:{label:'Something else'}
+};
+var a={},step=0,started=false;
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function down(){log.scrollTop=log.scrollHeight}
+function bot(x){log.appendChild(el('div','tc-m tc-b',x));down()}
+function me(x){log.appendChild(el('div','tc-m tc-u',x));down()}
+function chips(list,cb){var c=el('div','tc-c');list.forEach(function(x){var b=el('button',null,x[1]);b.type='button';b.onclick=function(){c.remove();me(x[1]);cb(x[0],x[1])};c.appendChild(b)});log.appendChild(c);down()}
+function free(on,ph){inp.disabled=!on;inp.placeholder=on?ph:'Choose an option above';if(on&&window.innerWidth>520)inp.focus()}
+function count(k){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:'chat-'+k,title:'Chat: '+k,event:true})}catch(e){}}
+function start(){a={};step=0;log.textContent='';
+ bot('Hello. I can help you write to us. Four short questions, then I prepare an email for you to send from your own mail.');
+ bot('What are you interested in?');free(false);
+ chips(Object.keys(T).map(function(k){return[k,T[k].label]}),function(k){a.topic=k;count(k);
+  if(T[k].q){bot(T[k].q);chips(T[k].o.map(function(o){return[o,o]}),function(o){a.detail=o;askTask()})}else askTask()})}
+function askTask(){step=1;bot(a.topic==='other'?'What would you like to ask or discuss?':'Describe your task in one or two sentences.');free(true,'Your task')}
+function askWho(){step=2;bot('Your name and company? You can skip this.');free(true,'Name, company');chips([['','Skip']],function(){a.who='';done()})}
+function draft(){var t=T[a.topic],L=['Hello,','','I am interested in: '+t.label+'.'];
+ if(a.detail)L.push(t.k+': '+a.detail+'.');
+ if(a.task)L.push('',a.task);
+ L.push('','Please send me the details.','','Best regards,');if(a.who)L.push(a.who);
+ return{s:'Enquiry: '+t.label,b:L.join('\n')}}
+function done(){step=3;free(false);var c=log.querySelector('.tc-c');if(c)c.remove();var d=draft();
+ bot('Here is your email:');bot('To: '+MAIL+'\nSubject: '+d.s+'\n\n'+d.b);
+ var c2=el('div','tc-c'),m=el('a','tc-p','Open in my mail');m.href='mailto:'+MAIL+'?subject='+encodeURIComponent(d.s)+'&body='+encodeURIComponent(d.b);m.onclick=function(){count('mail')};
+ var cp=el('button',null,'Copy text');cp.type='button';cp.onclick=function(){var x=d.b;(navigator.clipboard?navigator.clipboard.writeText(x):Promise.reject()).then(function(){cp.textContent='Copied'},function(){cp.textContent='Select the text above to copy'})};
+ var r=el('button',null,'Start again');r.type='button';r.onclick=start;
+ c2.appendChild(m);c2.appendChild(cp);c2.appendChild(r);log.appendChild(c2);
+ bot('Nothing is sent from this page. The email goes only when you send it yourself.')}
+$('tc-f').onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(!v||inp.disabled)return;inp.value='';me(v);
+ if(step===1){a.task=v;askWho()}else if(step===2){a.who=v;done()}};
+inp.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('tc-f').requestSubmit()}};
+btn.onclick=function(){box.classList.add('open');btn.style.display='none';if(!started){started=true;count('open');start()}};
+$('tc-x').onclick=function(){box.classList.remove('open');btn.style.display=''};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('open'))$('tc-x').onclick()});
+})();
+</script>
 <script data-goatcounter="https://turbotech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
