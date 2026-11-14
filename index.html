@@ -68,6 +68,17 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <source src="turbonexus-beam.mp4" type="video/mp4">
 </video>
 <p class="note">Preliminary beam model with rigid joints; bolts, welds and handrails are not in it. It is a calculation note for the responsible engineer, not a strength approval.</p>
+<div class="num" style="margin-top:44px">CFD</div>
+<p class="lead" style="margin-top:8px">Wind around the real STEP assembly in one command: no CAD clean-up, a grid built around the model automatically, compressible flow solved with a Godunov-type scheme, sections and flow lines in an offline viewer.</p>
+<video class="teaser" controls preload="none" playsinline poster="turbonexus-cfd-poster.jpg">
+<source src="turbonexus-cfd.mp4" type="video/mp4">
+</video>
+<ul class="pts">
+<li><b>Checked first</b>The exact shock-tube solution is reproduced; five Kármán vortex-street flows give drag within −14 … +25 % of reference data at 10 cells per calibre.</li>
+<li><b>Shape-aware</b>Each member’s section, sharp, rounded or round, corrects the drag. Computed and tuned forces are reported side by side.</li>
+<li><b>Access platform, 20 m/s</b>649 N along the wind and 910 N·m overturning moment; an independent hand estimate gives 650–750 N.</li>
+</ul>
+<p class="note">Preliminary inviscid estimate: 80 mm cells, 191 235 cells, 35 minutes on one processor core. Not a wind load according to a standard and not a stability statement. Viscous models (Navier–Stokes, k-ε, SST) and heat transfer follow on the same grid.</p>
 <div class="num" style="margin-top:44px">PDM</div>
 <p class="lead" style="margin-top:8px">A parts register that the design agent keeps in step with the model: structure, revisions, and a change notice that waits for an engineer to close the checks before anything is released.</p>
 <a href="nexus-pdm-demo.html"><img class="shot" src="nexus-pdm-poster.jpg" alt="Change notice for an access platform: release route, open checks and affected parts" loading="lazy"></a>
@@ -140,6 +151,7 @@ var T={
  nexus:{label:'TurboNexus, AI agent for CAD',q:'Which CAD system do you work in?',o:['NX','CATIA / 3DEXPERIENCE','SolidWorks','Creo','FreeCAD','Other'],k:'CAD system'},
  pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size'},
  mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks'},
+ cfd:{label:'CFD, wind and flow checks',q:'What flow would you like computed?',o:['Wind on a structure','Internal flow','Heat transfer','Something else'],k:'Flow'},
  sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine'},
  other:{label:'Something else'}
 };
