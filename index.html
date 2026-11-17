@@ -177,11 +177,12 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 var MAIL='turbotechnologies@email.cz';
 var $=function(i){return document.getElementById(i)},box=$('tc'),log=$('tc-log'),inp=$('tc-t'),btn=$('tc-btn');
 var T={
- nexus:{label:'TurboNexus, AI agent for CAD',q:'Which CAD system do you work in?',o:['NX','CATIA / 3DEXPERIENCE','SolidWorks','Creo','FreeCAD','Other'],k:'CAD system'},
- pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size'},
- mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks'},
- sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine'},
- other:{label:'Something else'}
+ nexus:{label:'TurboNexus, AI agent for CAD',q:'Which CAD system do you work in?',o:['NX','CATIA / 3DEXPERIENCE','SolidWorks','Creo','FreeCAD','Other'],k:'CAD system',c:['#case-cad','8 to 10 steps described in words'],ex:'e.g. lengthen a frame by 500 mm and update the BOM'},
+ pkg:{label:'Engineering package from 3D models',q:'Which rules does the product follow?',o:['CS-25 / CS-23','Machinery / EN','Internal standard','Not sure'],k:'Rules',c:['#case-package','airliner flight-deck assembly'],ex:'e.g. 40-part bracket assembly, need drawings and a stress note'},
+ pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size',c:['#case-pdm','a change notice in the register'],ex:'e.g. drawings in folders, revisions get mixed up'},
+ mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks',c:['#case-beam','frame under load'],ex:'e.g. steel platform, 300 kg on the deck, four wheels'},
+ sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine',c:['#case-sas','150-element network'],ex:'e.g. seal leakage and cavity pressure in a small turbine'},
+ other:{label:'Something else',ex:'Your question'}
 };
 var a={},step=0,started=false;
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
@@ -191,28 +192,31 @@ function me(x){log.appendChild(el('div','tc-m tc-u',x));down()}
 function chips(list,cb){var c=el('div','tc-c');list.forEach(function(x){var b=el('button',null,x[1]);b.type='button';b.onclick=function(){c.remove();me(x[1]);cb(x[0],x[1])};c.appendChild(b)});log.appendChild(c);down()}
 function free(on,ph){inp.disabled=!on;inp.placeholder=on?ph:'Choose an option above';if(on&&window.innerWidth>520)inp.focus()}
 function count(k){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:'chat-'+k,title:'Chat: '+k,event:true})}catch(e){}}
+function say(x,cb){setTimeout(function(){bot(x);if(cb)cb()},350)}
+function short(x){x=x.replace(/\s+/g,' ').trim();return x.length>90?x.slice(0,87)+'…':x}
 function start(){a={};step=0;log.textContent='';
- bot('Hello. A few short questions and your enquiry goes straight to our engineers.');
- bot('What are you interested in?');free(false);
- chips(Object.keys(T).map(function(k){return[k,T[k].label]}),function(k){a.topic=k;count(k);
-  if(T[k].q){bot(T[k].q);chips(T[k].o.map(function(o){return[o,o]}),function(o){a.detail=o;askTask()})}else askTask()})}
-function askTask(){step=1;bot(a.topic==='other'?'What would you like to ask or discuss?':'Describe your task in one or two sentences.');free(true,'Your task')}
+ bot('Hello. Tell us what you are working on, and an engineer, not a sales team, will answer.');
+ say('What is it about?',function(){free(false);
+ chips(Object.keys(T).map(function(k){return[k,T[k].label]}),function(k){a.topic=k;count(k);var t=T[k];
+  if(t.c)setTimeout(function(){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode('Similar case: '));m.appendChild(l);log.appendChild(m);down()},360);
+  if(t.q)setTimeout(function(){bot(t.q);chips(t.o.map(function(o){return[o,o]}),function(o){a.detail=o;askTask()})},700);else askTask()})})}
+function askTask(){step=1;say(a.topic==='other'?'What would you like to ask?':'In one or two sentences, what is the task?',function(){free(true,T[a.topic].ex)})}
 var KEY='WEB3FORMS_KEY';
-function askWho(){step=2;bot('Interesting. Anything else we should know: name, company, deadline? You can skip this.');free(true,'Name, company, anything else');chips([['','Skip']],function(){a.who='';askMail()})}
-function askMail(){step=3;bot('Leave your email and we will contact you.');free(true,'name@company.com')}
+function askWho(){step=2;say('Clear: “'+short(a.task)+'”. Anything that helps us answer better: your name, company, deadline?',function(){free(true,'Name, company, deadline');chips([['','Skip']],function(){a.who='';askMail()})})}
+function askMail(){step=3;say('Where should the engineer send the answer? We reply within two working days. No newsletters.',function(){free(true,'name@company.com')})}
 function draft(){var t=T[a.topic],L=['Interested in: '+t.label+'.'];
  if(a.detail)L.push(t.k+': '+a.detail+'.');
  if(a.task)L.push('','Task: '+a.task);
  if(a.who)L.push('','More: '+a.who);
  L.push('','Reply to: '+a.mail);
  return{s:'Enquiry: '+t.label,b:L.join('\n')}}
-function consent(){step=4;free(false);var c=el('div','tc-c'),b=el('button','tc-p','Agree and send');b.type='button';
- var n=el('div','tc-m tc-b');n.innerHTML='By sending you agree that Turbo Technologies s.r.o. keeps your email and message to answer your enquiry (GDPR). <a href="#privacy">Privacy note</a>.';
- log.appendChild(n);b.onclick=function(){c.remove();me('Agree and send');send()};c.appendChild(b);log.appendChild(c);down()}
+function consent(){step=4;free(false);var c=el('div','tc-c'),b=el('button','tc-p','Send to an engineer');b.type='button';
+ var n=el('div','tc-m tc-b');n.innerHTML='One click and it is with us. By sending you agree that Turbo Technologies s.r.o. keeps your email and message only to answer you (GDPR). <a href="#privacy">Privacy note</a>.';
+ log.appendChild(n);b.onclick=function(){c.remove();me('Send to an engineer');send()};c.appendChild(b);log.appendChild(c);down()}
 function send(){var d=draft();bot('Sending…');count('send');
  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
   body:JSON.stringify({access_key:KEY,subject:d.s,from_name:'Website assistant',email:a.mail,replyto:a.mail,message:d.b,consent:'yes'})})
- .then(function(r){return r.json()}).then(function(j){if(!j.success)throw 0;count('sent');bot('Thank you. Your enquiry has reached us; we will reply to '+a.mail+' within two working days.')})
+ .then(function(r){return r.json()}).then(function(j){if(!j.success)throw 0;count('sent');bot('Thank you. It is with us. An engineer will reply to '+a.mail+' within two working days. Meanwhile you can look at the case studies on this page.')})
  .catch(function(){count('fail');bot('Sorry, it did not go through. Please copy the text and send it to '+MAIL+'.');bot('To: '+MAIL+'\nSubject: '+d.s+'\n\n'+d.b);
   var c=el('div','tc-c'),m=el('a','tc-p','Open in my mail');m.href='mailto:'+MAIL+'?subject='+encodeURIComponent(d.s)+'&body='+encodeURIComponent(d.b);c.appendChild(m);log.appendChild(c);down()})}
 $('tc-f').onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(!v||inp.disabled)return;
