@@ -201,7 +201,7 @@ function start(){a={};step=0;log.textContent='';
   if(t.c)setTimeout(function(){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode('Similar case: '));m.appendChild(l);log.appendChild(m);down()},360);
   if(t.q)setTimeout(function(){bot(t.q);chips(t.o.map(function(o){return[o,o]}),function(o){a.detail=o;askTask()})},700);else askTask()})})}
 function askTask(){step=1;say(a.topic==='other'?'What would you like to ask?':'In one or two sentences, what is the task?',function(){free(true,T[a.topic].ex)})}
-var KEY='WEB3FORMS_KEY';
+var KEY='402ecf2f-51e7-41e8-9a08-3af5703fb68b';
 function askWho(){step=2;say('Clear: “'+short(a.task)+'”. Anything that helps us answer better: your name, company, deadline?',function(){free(true,'Name, company, deadline');chips([['','Skip']],function(){a.who='';askMail()})})}
 function askMail(){step=3;say('Where should the engineer send the answer? We reply within two working days. No newsletters.',function(){free(true,'name@company.com')})}
 function draft(){var t=T[a.topic],L=['Interested in: '+t.label+'.'];
