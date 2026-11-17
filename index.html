@@ -229,6 +229,37 @@ $('tc-x').onclick=function(){box.classList.remove('open');btn.style.display=''};
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('open'))$('tc-x').onclick()});
 })();
 </script>
+<script>
+/* Anonymous engagement events for GoatCounter: no cookies, no personal data. */
+(function(){
+var q=[],sent={};
+function ev(n){if(sent[n])return;sent[n]=1;q.push(n);flush()}
+function flush(){if(!(window.goatcounter&&goatcounter.count)){setTimeout(flush,1000);return}
+ while(q.length){var n=q.shift();try{goatcounter.count({path:n,title:n,event:true})}catch(e){}}}
+window.tnEv=ev;
+/* time in view: 10 s and 30 s */
+var els=document.querySelectorAll('#products,.case,#contact'),tm={};
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){var id=e.target.id;
+ if(e.isIntersecting&&e.intersectionRatio>=0.4){if(!tm[id])tm[id]=[setTimeout(function(){ev('see-'+id+'-10s')},10000),setTimeout(function(){ev('see-'+id+'-30s')},30000)]}
+ else if(tm[id]){tm[id].forEach(clearTimeout);tm[id]=null}})},{threshold:[0,0.4]});
+ els.forEach(function(x){io.observe(x)})}
+/* videos: play, half, end */
+document.querySelectorAll('video').forEach(function(v){var c=v.closest('.case'),id=c?c.id:'video';
+ v.addEventListener('play',function(){ev('video-'+id+'-play')});
+ v.addEventListener('timeupdate',function(){if(v.duration&&v.currentTime/v.duration>=0.5)ev('video-'+id+'-50')});
+ v.addEventListener('ended',function(){ev('video-'+id+'-end')})});
+/* scroll depth */
+addEventListener('scroll',function(){var h=document.documentElement,d=(h.scrollTop+innerHeight)/h.scrollHeight;
+ [25,50,75,100].forEach(function(k){if(d>=k/100-0.01)ev('scroll-'+k)})},{passive:true});
+/* clicks on demos, PDF, GitHub, mail, product cards */
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
+ if(a.classList.contains('prod'))ev('click-prod-'+h.replace('#',''));
+ else if(/demo\.html$/.test(h))ev('click-'+h.replace('.html',''));
+ else if(/\.pdf$/.test(h))ev('click-pdf');
+ else if(/github\.com/.test(h))ev('click-github');
+ else if(/^mailto:/.test(h)&&!a.closest('#tc'))ev('click-mail')});
+})();
+</script>
 <script data-goatcounter="https://turbotech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
