@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TurboNexus CFD: the Euler solution · Turbo Technologies</title>
+<meta name="description" content="How TurboNexus CFD solves the Euler equations on a grid built from a STEP model: Godunov-type scheme, boundary conditions, checks and shape tuning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Rubik:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14213D;--muted:#4A5568;--accent:#C0531E;--bg:#F6F5F1;--card:#FFFFFF;--line:#DAD8D0}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 'IBM Plex Sans',Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header{background:var(--ink);color:#F6F5F1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:16px;flex-wrap:wrap}
+nav b{font:600 20px Rubik,Arial,sans-serif;letter-spacing:.5px}
+nav a{color:#C9D2E0;text-decoration:none;margin-left:20px;font-size:15px}
+.hero{padding:48px 0 56px}
+.hero h1{font:600 clamp(28px,4.4vw,44px)/1.15 Rubik,Arial,sans-serif;max-width:760px}
+.hero p{color:#C9D2E0;font-size:18.5px;max-width:680px;margin-top:16px}
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.num{font:600 14px Rubik,sans-serif;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+h2{font:600 27px/1.2 Rubik,Arial,sans-serif;margin:8px 0 16px}
+p+p{margin-top:12px}
+.eq{font-family:'Cambria Math','STIX Two Math','DejaVu Serif',Georgia,serif;font-size:18px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink);border-radius:8px;padding:14px 18px;margin:16px 0;overflow-x:auto;line-height:1.75}
+ul.list{padding-left:22px;margin-top:10px}ul.list li{margin:6px 0}
+ul.pts{list-style:none;padding:0;margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+ul.pts li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;color:var(--muted);font-size:15.5px}
+ul.pts b{display:block;color:var(--ink);font:600 17px Rubik,sans-serif;margin-bottom:4px}
+img.fig,video.fig{display:block;width:100%;height:auto;margin-top:22px;border-radius:12px;border:1px solid var(--line);background:#fff}
+video.fig{background:#16191d}
+.cap{color:var(--muted);font-size:14.5px;margin-top:8px}
+.note{color:var(--muted);font-size:15.5px;margin-top:16px}
+.tbl{overflow-x:auto;margin-top:18px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:#ECEAE3;font-weight:500}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.limits{background:var(--ink);color:#F6F5F1;border-radius:16px;padding:30px;margin-top:6px}
+.limits h2{color:#F6F5F1}.limits li{color:#C9D2E0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:15px;background:#ECEAE3;padding:1px 5px;border-radius:4px}
+footer{padding:36px 0;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<nav><b>TURBO TECHNOLOGIES</b><span><a href="index.html#products">Products</a><a href="index.html#cases">Case studies</a><a href="index.html#contact">Contact</a></span></nav>
+<div class="hero">
+<div class="num" style="color:#E8A27E">TurboNexus CFD</div>
+<h1>The Euler solution: wind on a real assembly, from the STEP model</h1>
+<p>No CAD clean-up and no meshing by hand: the grid is built around the model, the compressible Euler equations are solved with a Godunov-type scheme, and the result comes with its checks and its limits written next to it.</p>
+</div>
+</div>
+</header>
+
+<main class="wrap">
+
+<section>
+<div class="num">01 · Equations</div>
+<h2>What is solved</h2>
+<p>The unsteady Euler equations of a compressible gas in conservative form, on a uniform Cartesian grid:</p>
+<div class="eq">∂U/∂t + ∂F/∂x + ∂G/∂y + ∂H/∂z = 0<br>
+U = [ρ, ρu, ρv, ρw, ρE],&nbsp;&nbsp; F = [ρu, ρu² + p, ρuv, ρuw, (ρE + p)u]<br>
+p = ρRT,&nbsp;&nbsp; R = c<sub>p</sub> − c<sub>v</sub>,&nbsp;&nbsp; E = e(T) + ½|V|²</div>
+<p>The gas has constant c<sub>p</sub> and c<sub>v</sub>, or a table c<sub>p</sub>(T), c<sub>v</sub>(T) for a thermally perfect gas. The same state layout is kept for the viscous models that come next.</p>
+</section>
+
+<section>
+<div class="num">02 · Grid</div>
+<h2>A grid built from the STEP model</h2>
+<ul class="list">
+<li>The box is the model with margins on every side; the cells are cubes of one size, for example 80 mm for a 3 m frame.</li>
+<li>Each part is sampled inside every cell to get its solid fraction. A hollow tube counts with its outer shape: it blocks the wind like a bar. Openings in a welded frame stay open.</li>
+<li>The threshold for a solid cell is chosen so that the frontal area of the grid along the wind equals the frontal area of the real geometry. Thin members are partly lost, thick ones partly widened, and the blockage is kept. The grid report shows both areas and both volumes before anything is solved.</li>
+</ul>
+</section>
+
+<section>
+<div class="num">03 · Scheme</div>
+<h2>A Riemann problem on every cell face</h2>
+<p>Finite volumes: every cell keeps its mass, momentum and energy, and changes only through the fluxes across its six faces.</p>
+<div class="eq">dU<sub>i</sub>/dt = −(1/h) · Σ<sub>faces</sub> (F<sub>out</sub> − F<sub>in</sub>)</div>
+<ul class="list">
+<li><b>Reconstruction.</b> Density, velocity and pressure are taken as linear inside a cell, with the minmod limiter, so that no new extrema appear at shocks. Next to a wall the scheme drops to first order.</li>
+<li><b>Face flux.</b> The two states on a face are treated as a discontinuity that decays. The exact solution of this Riemann problem gives Godunov’s flux: contact pressure by Newton iteration, then the state on the face is picked from the shock, the rarefaction fan or the star region. HLLC (about three times cheaper, close to exact) and Rusanov (the most diffusive) are available as options.</li>
+<li><b>Time.</b> Explicit two-stage Runge–Kutta, step limited by the Courant number (CFL ≤ 0.8). The run starts from rest and the wind comes on smoothly, so there is no start-up shock.</li>
+</ul>
+<img class="fig" src="nexus-cfd-sod.png" alt="Sod shock tube density profile: exact solution, Godunov-type scheme with exact Riemann flux, and a central scheme with artificial viscosity" loading="lazy">
+<p class="cap">First check: the Sod shock tube, computed by the package itself. The Godunov-type scheme follows the rarefaction, contact and shock of the exact solution without oscillation (density between the rarefaction and the contact 0.4260, exact 0.4263). A central scheme with artificial viscosity rings at both discontinuities.</p>
+</section>
+
+<section>
+<div class="num">04 · Boundaries</div>
+<h2>What happens at the walls and at the edges of the box</h2>
+<ul class="list">
+<li><b>Parts and ground</b> are slip walls: no mass or energy through the face, only the wall pressure p<sub>w</sub> = p + ½ρu<sub>n</sub>|u<sub>n</sub>| in the momentum flux and in the force.</li>
+<li><b>Inflow</b> is given by total pressure, total temperature and direction; the outgoing Riemann invariant comes from inside. A body that pushes back on the flow does not add total pressure.</li>
+<li><b>Other sides</b> are open by Riemann invariants along the normal, so pressure waves leave the box instead of reflecting.</li>
+</ul>
+</section>
+
+<section>
+<div class="num">05 · Speed</div>
+<h2>Mach-number similarity</h2>
+<p>At 20 m/s the Mach number is about 0.06, and an explicit compressible scheme would need about five times more steps. The flow is solved at Mach 0.3 with the same air state and scaled back: velocities by U/U<sub>s</sub>, pressure differences and forces by (U/U<sub>s</sub>)². The small compressibility effect at Mach 0.3 is not removed by the scaling; a Mach term in the tuning tables brings sharp sections back to the calibration point.</p>
+</section>
+
+<section>
+<div class="num">06 · Checks and tuning</div>
+<h2>Known flows first, then a correction by member shape</h2>
+<img class="fig" src="nexus-cfd-karman.jpg" alt="Kármán vortex street behind a square cylinder, velocity contours with streamlines" loading="lazy">
+<p class="cap">Vortex street behind a square cylinder at 10 cells across, plane flow.</p>
+<p style="margin-top:18px">An inviscid solver has no Reynolds number: the wake comes from the numerical viscosity of the scheme on the grid. So we measure what the scheme gives on isolated cylinders and compare it with experiment.</p>
+<div class="tbl"><table>
+<tr><th>Section</th><th>C<sub>d</sub> experiment</th><th>C<sub>d</sub> solver</th><th>Strouhal, experiment</th><th>Strouhal, solver</th></tr>
+<tr><td>square</td><td class="n">2.16</td><td class="n">1.80</td><td class="n">0.13</td><td class="n">0.160</td></tr>
+<tr><td>circle (subcritical)</td><td class="n">about 1.2</td><td class="n">1.34</td><td class="n">0.20</td><td class="n">0.196</td></tr>
+<tr><td>rounded square, r/D 0.2</td><td class="n">about 1.2</td><td class="n">1.30</td><td class="n">–</td><td class="n">0.193</td></tr>
+<tr><td>plate across the wind</td><td class="n">2.0</td><td class="n">2.50</td><td class="n">–</td><td class="n">0.197</td></tr>
+<tr><td>rectangle, length 0.5 D along the wind</td><td class="n">2.5</td><td class="n">1.65</td><td class="n">0.13</td><td class="n">0.18</td></tr>
+<tr><td>rectangle, length 2 D along the wind</td><td class="n">1.59</td><td class="n">1.64</td><td class="n">0.08–0.09</td><td class="n">0.171</td></tr>
+</table></div>
+<p class="note">Experiment: Norberg, J. Wind Eng. Ind. Aerodyn. 49 (1993); Okajima, J. Fluid Mech. 123 (1982); circle from standard subcritical data. Solver: 10 cells across D, Mach 0.3.</p>
+<ul class="pts">
+<li><b>Drag can be tuned</b>Each member is cut across its axis: caliber D, corner radius r/D, length along the wind l/D. The factor C<sub>d</sub> experiment / C<sub>d</sub> solver is weighted by frontal area.</li>
+<li><b>In criterial form</b>C<sub>d</sub> = C·Re<sup>n</sup> by ranges on the member caliber, as in heat-transfer practice; round tubes are held at their rough-surface value, not at the drag crisis.</li>
+<li><b>Frequency cannot</b>The Strouhal number stays at 0.16–0.20 for every shape. Shedding frequency is not taken from the Euler solution.</li>
+</ul>
+</section>
+
+<section>
+<div class="num">07 · Example</div>
+<h2>Access platform, 20 m/s</h2>
+<video class="fig" controls preload="none" playsinline poster="turbonexus-cfd-poster.jpg">
+<source src="turbonexus-cfd.mp4" type="video/mp4">
+</video>
+<p class="cap">The video was recorded with the first tuning table (649 N). The current criterial tuning gives the figures below.</p>
+<ul class="pts">
+<li><b>597 N computed</b>force along the wind from the wall pressures</li>
+<li><b>616 N tuned</b>after the correction by member shape; an independent hand estimate gives 650–750 N</li>
+<li><b>191 235 cells</b>80 mm grid, 123 members, about 35 minutes on one processor core</li>
+</ul>
+<p class="note">Our own design. Preliminary inviscid estimate: not a wind load according to a standard and not a stability statement.</p>
+</section>
+
+<section style="border:0">
+<div class="limits">
+<h2>Known limits, stated up front</h2>
+<ul class="list">
+<li>No boundary layers and no turbulence; wakes come from numerical viscosity only.</li>
+<li>Members thinner than a cell are partly lost or widened; the grid report shows by how much.</li>
+<li>A 1 m margin around the model blocks the flow, so forces come out on the high side. The wind is uniform, without a profile over height.</li>
+<li>Next on the same grid: laminar Navier–Stokes, k-ε and SST turbulence models, heat transfer.</li>
+</ul>
+</div>
+<p style="margin-top:28px">Please do not hesitate to contact us for details: <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus%20CFD">turbotechnologies@email.cz</a> · <a href="index.html#cases">back to the case studies</a></p>
+</section>
+
+</main>
+<footer><div class="wrap">© 2026 Turbo Technologies s.r.o. · TurboNexus© — engineering solution by Turbo Technologies s.r.o.</div></footer>
+<script data-goatcounter="https://turbotech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
