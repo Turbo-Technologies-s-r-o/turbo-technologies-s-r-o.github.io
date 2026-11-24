@@ -17,6 +17,7 @@ header{background:var(--ink);color:#F6F5F1}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:16px;flex-wrap:wrap}
 nav b{font:600 20px Rubik,Arial,sans-serif;letter-spacing:.5px}
 nav a{color:#C9D2E0;text-decoration:none;margin-left:20px;font-size:15px}
+nav a.home{color:#F6F5F1;margin-left:0}
 .hero{padding:48px 0 56px}
 .hero h1{font:600 clamp(28px,4.4vw,44px)/1.15 Rubik,Arial,sans-serif;max-width:760px}
 .hero p{color:#C9D2E0;font-size:18.5px;max-width:680px;margin-top:16px}
@@ -47,7 +48,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <body>
 <header>
 <div class="wrap">
-<nav><b>TURBO TECHNOLOGIES</b><span><a href="index.html#products">Products</a><a href="index.html#cases">Case studies</a><a href="index.html#contact">Contact</a></span></nav>
+<nav><a class="home" href="./"><b>TURBO TECHNOLOGIES</b></a><span><a href="index.html#products">Products</a><a href="index.html#cases">Case studies</a><a href="index.html#contact">Contact</a></span></nav>
 <div class="hero">
 <div class="num" style="color:#E8A27E">TurboNexus CFD</div>
 <h1>The Euler solution: wind on a real assembly, from the STEP model</h1>

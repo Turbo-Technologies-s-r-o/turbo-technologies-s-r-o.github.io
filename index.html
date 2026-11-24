@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Turbo Technologies</title>
-<meta name="description" content="Engineering tools for gas turbines and turbomachinery. Prague.">
+<meta name="description" content="Engineering tools proven on gas turbines, for engineers in turbomachinery and beyond. Prague.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Rubik:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -17,6 +17,7 @@ header{background:var(--ink);color:#F6F5F1}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:16px;flex-wrap:wrap}
 nav b{font:600 20px Rubik,Arial,sans-serif;letter-spacing:.5px}
 nav a{color:#C9D2E0;text-decoration:none;margin-left:20px;font-size:15px}
+nav a.home{color:#F6F5F1;margin-left:0}
 .hero{padding:64px 0 76px}
 .hero h1{font:600 clamp(30px,5vw,50px)/1.15 Rubik,Arial,sans-serif;max-width:760px}
 .hero p{color:#C9D2E0;font-size:19px;max-width:620px;margin-top:18px}
@@ -47,9 +48,9 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <body>
 <header>
 <div class="wrap">
-<nav><b>TURBO TECHNOLOGIES</b><span><a href="#products">Products</a><a href="#cases">Case studies</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
+<nav><a class="home" href="./"><b>TURBO TECHNOLOGIES</b></a><span><a href="#products">Products</a><a href="#cases">Case studies</a><a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">GitHub</a><a href="#contact">Contact</a></span></nav>
 <div class="hero">
-<h1>Engineering tools for gas turbines and turbomachinery</h1>
+<h1>Tools proven on gas turbines, for engineers in turbomachinery and beyond</h1>
 <p>Since 2011. Calculation methods built from first principles and checked against real engine programmes.</p>
 <p class="motto">“All models are wrong, but some are useful.” — George Box. Ours are very useful. © Turbo Technologies</p>
 </div>
@@ -66,7 +67,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <a class="prod" href="#case-package"><b>TurboNexus: engineering package</b><span>From 3D models to a review-ready package: model check, strength, drawings, job cards, compliance documents and a sign-off page, all from one data chain.</span><i>See the case →</i></a>
 <a class="prod" href="#case-beam"><b>TurboNexus Mechanical</b><span>Beam and shell models with transparent maths: stresses, deflections, reactions and an explicit list of what the model leaves out.</span><i>See the case →</i></a>
 <a class="prod" href="#case-cfd"><b>TurboNexus CFD</b><span>Wind and air flow around a real assembly straight from the STEP model: automatic grid, Euler solution with a Godunov-type scheme, forces and moments, and a correction by member shape checked against known flows.</span><i>See the case →</i></a>
-<a class="prod" href="#case-pdm"><b>TurboNexus PDM</b><span>A parts register kept in step with the model: structure, revisions, and change notices that wait for an engineer to close the checks before release.</span><i>See the case →</i></a>
+<a class="prod" href="nexus-pdm-demo.html"><b>TurboNexus PDM</b><span>A parts register kept in step with the model: structure, revisions, and change notices that wait for an engineer to close the checks before release.</span><i>Open the live demo →</i></a>
 <a class="prod" href="#case-sas"><b>sasnet: secondary air systems</b><span>A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust. Open source (Apache-2.0), consistent with tools used in EASA Part 21 and CS-E work.</span><i>See the case →</i></a>
 </div>
 <ul class="pts">
@@ -122,13 +123,6 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 </ul>
 <p class="lead" style="margin-top:14px"><a href="nexus-cfd.html">How the Euler solution works</a>: equations, grid, scheme, boundaries, checks and limits.</p>
 <p class="note">Preliminary inviscid estimate, not a wind load according to a standard. The video was recorded with the first tuning table (649 N).</p>
-</article>
-
-<article class="case" id="case-pdm">
-<h3>Change notice “8 to 10 steps” in the parts register</h3>
-<a href="nexus-pdm-demo.html"><img class="shot" src="nexus-pdm-poster.jpg" alt="Change notice for an access platform: release route, open checks and affected parts" loading="lazy"></a>
-<p class="lead" style="margin-top:14px"><a href="nexus-pdm-demo.html">Open the live demonstration</a>: search the 113-item register, expand the structure, read the change notice.</p>
-<p class="note">The access platform is our own design. The release history, dates and roles are invented for the demonstration.</p>
 </article>
 
 <article class="case" id="case-sas">
@@ -194,7 +188,7 @@ var $=function(i){return document.getElementById(i)},box=$('tc'),log=$('tc-log')
 var T={
  nexus:{label:'TurboNexus, AI agent for CAD',q:'Which CAD system do you work in?',o:['NX','CATIA / 3DEXPERIENCE','SolidWorks','Creo','FreeCAD','Other'],k:'CAD system',c:['#case-cad','8 to 10 steps described in words'],ex:'e.g. lengthen a frame by 500 mm and update the BOM'},
  pkg:{label:'Engineering package from 3D models',q:'Which rules does the product follow?',o:['CS-25 / CS-23','Machinery / EN','Internal standard','Not sure'],k:'Rules',c:['#case-package','airliner flight-deck assembly'],ex:'e.g. 40-part bracket assembly, need drawings and a stress note'},
- pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size',c:['#case-pdm','a change notice in the register'],ex:'e.g. drawings in folders, revisions get mixed up'},
+ pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size',c:['nexus-pdm-demo.html','a change notice in the register (live demo)'],ex:'e.g. drawings in folders, revisions get mixed up'},
  mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks',c:['#case-beam','frame under load'],ex:'e.g. steel platform, 300 kg on the deck, four wheels'},
  cfd:{label:'CFD, wind and flow',q:'What flow would you like computed?',o:['Wind on a structure','Internal flow','Heat transfer','Something else'],k:'Flow',c:['#case-cfd','wind on an access platform'],ex:'e.g. wind force on a 3 m steel frame at 25 m/s'},
  sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine',c:['#case-sas','150-element network'],ex:'e.g. seal leakage and cavity pressure in a small turbine'},
