@@ -70,6 +70,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <a class="prod" href="#case-beam"><b>TurboNexus Mechanical</b><span>Beam and shell models with transparent maths: stresses, deflections, reactions and an explicit list of what the model leaves out.</span><i>See the case →</i></a>
 <a class="prod" href="#case-cfd"><b>TurboNexus CFD</b><span>Wind and air flow around a real assembly straight from the STEP model: automatic grid, Euler solution with a Godunov-type scheme, forces and moments, and a correction by member shape checked against known flows.</span><i>See the case →</i></a>
 <a class="prod" href="nexus-pdm-demo.html"><b>TurboNexus PDM</b><span>A parts register kept in step with the model: structure, revisions, and change notices that wait for an engineer to close the checks before release.</span><i>Open the live demo →</i></a>
+<a class="prod" href="#case-ae"><b>TurboNexus AE: tenders and document-heavy work</b><span>The PDM idea carried over to whole processes: a 400-page RFP becomes traceable requirements, fuel, equipment and site checks, change impact, a frozen configuration and a plan for design, shop, logistics and commissioning.</span><i>See the case →</i></a>
 <a class="prod" href="#case-sas"><b>sasnet: secondary air systems</b><span>A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust. Open source (Apache-2.0), consistent with tools used in EASA Part 21 and CS-E work.</span><i>See the case →</i></a>
 </div>
 <ul class="pts">
@@ -127,6 +128,21 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <p class="lead" style="margin-top:14px"><a href="nexus-cfd.html">How the Euler solution works</a>: equations, grid, scheme, boundaries, checks and limits.</p>
 <p class="note">Preliminary inviscid estimate, not a wind load according to a standard. The video was recorded with the first tuning table (649 N).</p>
 <p class="fp"><b>First principles:</b> conservation of mass, momentum and energy (Euler equations), a Riemann problem on every cell face (Godunov), Riemann invariants at the open boundaries.</p>
+</article>
+
+<article class="case" id="case-ae">
+<h3>A gas-turbine package tender, from RFP to field result</h3>
+<p class="lead">The PDM keeps parts, revisions and change notices in step. The same approach can carry a whole process that runs on documents. Here it is an application engineer's tender: 2 × 15 MW compressor packages, 412 pages, a 45 °C site, H2S in the fuel gas, and a customer who changes the design ambient in the middle of the bid.</p>
+<video class="teaser" controls preload="none" playsinline poster="turbonexus-ae-tender-poster.jpg">
+<source src="turbonexus-ae-tender.mp4" type="video/mp4">
+</video>
+<ul class="pts">
+<li><b>312 requirements</b>each with its source clause, an owner and an evidence level; COMPLY without evidence shows as a risk</li>
+<li><b>1 input, 14 items</b>35 → 48 °C reopens the power margin, emissions, guarantees and the performance test</li>
+<li><b>Closed loop</b>runs on the company's own performance data, standards and quality system; nothing leaves the company</li>
+</ul>
+<p class="note">A notional tender: companies, characters and numbers are invented. The same approach fits other document-heavy work: certification packages, change notices, supplier and quality documents.</p>
+<p class="fp"><b>Principle:</b> no evidence, not closed. Every requirement is traced from its source clause to the test that proves it; the engineer decides and signs.</p>
 </article>
 
 <article class="case" id="case-sas">
@@ -197,6 +213,7 @@ var T={
  mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks',c:['#case-beam','frame under load'],ex:'e.g. steel platform, 300 kg on the deck, four wheels'},
  cfd:{label:'CFD, wind and flow',q:'What flow would you like computed?',o:['Wind on a structure','Internal flow','Heat transfer','Something else'],k:'Flow',c:['#case-cfd','wind on an access platform'],ex:'e.g. wind force on a 3 m steel frame at 25 m/s'},
  sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine',c:['#case-sas','150-element network'],ex:'e.g. seal leakage and cavity pressure in a small turbine'},
+ ae:{label:'Tenders and document-heavy work',q:'What kind of documents?',o:['RFPs and tenders','Certification packages','Change and quality documents','Other'],k:'Documents',c:['#case-ae','a gas-turbine package tender'],pre:'See it in a notional example: ',ex:'e.g. 400-page RFP, compliance matrix needed in a week'},
  other:{label:'Something else',ex:'Your question'}
 };
 var a={},step=0,started=false;
@@ -223,12 +240,16 @@ var A={
  cfd:{'Wind on a structure':'An Euler solution on your STEP model: force and overturning moment along the wind, corrected by member shape, with a hand estimate alongside. A preliminary estimate, not a wind load according to a standard.',
   'Internal flow':'The same solver handles ducts and cavities in the inviscid approximation; viscous and turbulence models follow on the same grid. Describe the geometry and the flow and we say what it can give.',
   '*':'Heat transfer and other physics come with the viscous models on the same grid. Describe the case and an engineer tells you what can be done now.'},
+ ae:{'RFPs and tenders':'The RFP package is read in full: every requirement gets its source clause, an owner and an evidence level, contradictions are flagged, and fuel, equipment and site checks follow. COMPLY without evidence is shown as a risk, not hidden.',
+  'Certification packages':'Each requirement is traced from its rule to the document and the test that shows compliance, with open points listed for the responsible engineer. Approval and signature stay with your organisation.',
+  'Change and quality documents':'A change is followed through everything it touches: documents, parts, tests and schedule. It runs on your own quality system and standards, inside your network.',
+  '*':'Wherever the work runs on many documents, the same chain applies: requirement, source, evidence, owner, status. Describe the process and an engineer tells you what can be automated.'},
  sas:{'*':'sasnet computes the secondary air network of a {o}: cooling flows, seal leakage, cavity pressures and rotor axial thrust. Open source, validated on engine networks of 200+ branches.',
   'Other':'sasnet computes any network of orifices, labyrinths and channels: flows, leakage, cavity pressures and axial thrust. Open source, validated on engine networks of 200+ branches.'}
 };
 function answer(k,o){var m=A[k]||{},x=m[o]||m['*']||'';return x.replace(/\{o\}/g,k==='sas'?o.toLowerCase():o)}
 function after(t){setTimeout(function(){
-  if(t.c){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode('See it on a real case: '));m.appendChild(l);log.appendChild(m);down()}
+  if(t.c){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode(t.pre||'See it on a real case: '));m.appendChild(l);log.appendChild(m);down()}
   chips([['ask','Ask an engineer'],['done','Thanks, that is enough']],function(x){if(x==='ask')askTask();else{count('done');say('Glad it helped. The button stays here if you need us.')}})},400)}
 function start(){a={};step=0;log.textContent='';
  bot('Hello. Two clicks and you have an answer; an engineer, not a sales team, is behind it.');
