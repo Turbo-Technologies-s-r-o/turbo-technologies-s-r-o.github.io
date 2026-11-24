@@ -42,6 +42,8 @@ img.shot{display:block;width:100%;height:auto;margin-top:26px;border-radius:12px
 .case{padding-top:30px;margin-top:30px;border-top:1px solid var(--line);scroll-margin-top:16px}
 .case:first-of-type{border-top:0;margin-top:10px;padding-top:0}
 h3{font:600 22px/1.3 Rubik,Arial,sans-serif;margin-bottom:12px;max-width:760px}
+.fp{margin-top:16px;max-width:760px;font-size:15.5px;color:var(--muted);border-left:3px solid var(--accent);padding:2px 0 2px 12px}
+.fp b{color:var(--ink);font-weight:500}
 footer{padding:36px 0;color:var(--muted);font-size:15px}
 </style>
 </head>
@@ -72,7 +74,6 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 </div>
 <ul class="pts">
 <li><b>Inside the perimeter</b>Design data does not leave the customer.</li>
-<li><b>First principles</b>Bernoulli, Euler, Kirchhoff, Borda–Carnot; every input traceable.</li>
 <li><b>Engineers sign</b>The tool does the legwork and keeps the trail of decisions.</li>
 </ul>
 </section>
@@ -93,6 +94,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <li><b>37 drawings</b>with hole tables and material usage; 414 routing operations for the shop</li>
 </ul>
 <p class="note">A prepared package, not an approval: the responsible engineers check, confirm and sign. Customer, aircraft and part data are not shown.</p>
+<p class="fp"><b>First principles:</b> static equilibrium, beam and plate bending, rivet shear and bearing; hand calculations side by side with the shell FE, every input traceable to the model.</p>
 </article>
 
 <article class="case" id="case-cad">
@@ -109,6 +111,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <source src="turbonexus-beam.mp4" type="video/mp4">
 </video>
 <p class="note">Preliminary beam model with rigid joints; bolts, welds and handrails are not in it. It is a calculation note for the responsible engineer, not a strength approval.</p>
+<p class="fp"><b>First principles:</b> Euler–Bernoulli beams, equilibrium at every joint, the stiffness method; reactions are checked against the total weight.</p>
 </article>
 
 <article class="case" id="case-cfd">
@@ -123,6 +126,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 </ul>
 <p class="lead" style="margin-top:14px"><a href="nexus-cfd.html">How the Euler solution works</a>: equations, grid, scheme, boundaries, checks and limits.</p>
 <p class="note">Preliminary inviscid estimate, not a wind load according to a standard. The video was recorded with the first tuning table (649 N).</p>
+<p class="fp"><b>First principles:</b> conservation of mass, momentum and energy (Euler equations), a Riemann problem on every cell face (Godunov), Riemann invariants at the open boundaries.</p>
 </article>
 
 <article class="case" id="case-sas">
@@ -131,6 +135,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <p class="lead" style="margin-top:14px"><a href="nexus-sas-demo.html">Open the live demonstration</a>: rotate it, move the section plane, click any line or cavity. Or read the <a href="turbonexus-secondary-air.pdf">four-page overview (PDF)</a>. Validated on engine networks of 200+ branches.</p>
 <p class="note">Synthetic 150-element network on an invented geometry, not an engine. Values are illustrative: a simplified solver, no rotation, no heat transfer.</p>
 <p class="lead" style="margin-top:18px">Open source: <a href="https://github.com/Turbo-Technologies-s-r-o/sasnet">github.com/Turbo-Technologies-s-r-o/sasnet</a></p>
+<p class="fp"><b>First principles:</b> Bernoulli, Euler, Kirchhoff, Borda–Carnot and Poiseuille; every element and every input traceable.</p>
 </article>
 
 <p class="lead" style="margin-top:36px">Please do not hesitate to contact us for details: <a href="mailto:turbotechnologies@email.cz?subject=TurboNexus">turbotechnologies@email.cz</a></p>
