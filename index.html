@@ -209,16 +209,37 @@ function free(on,ph){inp.disabled=!on;inp.placeholder=on?ph:'Choose an option ab
 function count(k){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:'chat-'+k,title:'Chat: '+k,event:true})}catch(e){}}
 function say(x,cb){setTimeout(function(){bot(x);if(cb)cb()},350)}
 function short(x){x=x.replace(/\s+/g,' ').trim();return x.length>90?x.slice(0,87)+'…':x}
+var A={
+ nexus:{'Other':'TurboNexus reads STEP, so it works with files from your CAD system today, without a CAD licence: you describe the change in words, it is carried out on a copy of the model, and you get the old and new versions with the bill-of-materials difference.',
+  '*':'TurboNexus reads STEP, so it works with {o} files today, without a CAD licence: you describe the change in words, it is carried out on a copy of the model, and you get the old and new versions with the bill-of-materials difference. A direct link to {o} is set up per customer.',
+  'SolidWorks':'TurboNexus reads SolidWorks parts and assemblies, also without SolidWorks installed, and builds associative drawings on your sheet format. A change described in words is carried out on a copy of the model, with the old and new versions and the bill-of-materials difference side by side.'},
+ pkg:{'CS-25 / CS-23':'We prepare the package the way a Part 21J design organisation uses it: hole-by-hole model check, hand calculations and shell FE, drawings, job cards and the compliance documents. Approval and signature stay with your responsible engineers.',
+  '*':'The chain is the same: model check, strength notes, drawings with hole tables, job cards. The compliance documents are laid out to the rules you name; send an example and we map the package onto it.'},
+ pdm:{'1 to 5':'For a small team: a parts register over your existing folders, with structure, revisions and change notices. No server to buy; the data stays on your network.',
+  '*':'With roles: draft, design check, process review, release. A change notice waits until an engineer closes its checks, and the design data stays inside your network.'},
+ mech:{'Frames and beams':'A beam model straight from the STEP assembly: stresses, deflections and reactions, with an explicit list of what the model leaves out. Riveted sheet-metal assemblies get shell FE with the fasteners.',
+  'Bolts and welds':'Joint checks fastener by fastener: shear, bearing and margins, with the weak joint shown in 3D and a redesign proposal when the margin is negative.',
+  '*':'Tell us the part and the load case in a sentence, and we tell you which model fits and what it will leave out.'},
+ cfd:{'Wind on a structure':'An Euler solution on your STEP model: force and overturning moment along the wind, corrected by member shape, with a hand estimate alongside. A preliminary estimate, not a wind load according to a standard.',
+  'Internal flow':'The same solver handles ducts and cavities in the inviscid approximation; viscous and turbulence models follow on the same grid. Describe the geometry and the flow and we say what it can give.',
+  '*':'Heat transfer and other physics come with the viscous models on the same grid. Describe the case and an engineer tells you what can be done now.'},
+ sas:{'*':'sasnet computes the secondary air network of a {o}: cooling flows, seal leakage, cavity pressures and rotor axial thrust. Open source, validated on engine networks of 200+ branches.',
+  'Other':'sasnet computes any network of orifices, labyrinths and channels: flows, leakage, cavity pressures and axial thrust. Open source, validated on engine networks of 200+ branches.'}
+};
+function answer(k,o){var m=A[k]||{},x=m[o]||m['*']||'';return x.replace(/\{o\}/g,k==='sas'?o.toLowerCase():o)}
+function after(t){setTimeout(function(){
+  if(t.c){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode('See it on a real case: '));m.appendChild(l);log.appendChild(m);down()}
+  chips([['ask','Ask an engineer'],['done','Thanks, that is enough']],function(x){if(x==='ask')askTask();else{count('done');say('Glad it helped. The button stays here if you need us.')}})},400)}
 function start(){a={};step=0;log.textContent='';
- bot('Hello. Tell us what you are working on, and an engineer, not a sales team, will answer.');
+ bot('Hello. Two clicks and you have an answer; an engineer, not a sales team, is behind it.');
  say('What is it about?',function(){free(false);
  chips(Object.keys(T).map(function(k){return[k,T[k].label]}),function(k){a.topic=k;count(k);var t=T[k];
-  if(t.c)setTimeout(function(){var m=el('div','tc-m tc-b'),l=el('a',null,t.c[1]);l.href=t.c[0];m.appendChild(document.createTextNode('Similar case: '));m.appendChild(l);log.appendChild(m);down()},360);
-  if(t.q)setTimeout(function(){bot(t.q);chips(t.o.map(function(o){return[o,o]}),function(o){a.detail=o;askTask()})},700);else askTask()})})}
+  if(!t.q){askTask();return}
+  say(t.q,function(){chips(t.o.map(function(o){return[o,o]}),function(o){a.detail=o;count(k+'-answer');say(answer(k,o),function(){after(t)})})})})})}
 function askTask(){step=1;say(a.topic==='other'?'What would you like to ask?':'In one or two sentences, what is the task?',function(){free(true,T[a.topic].ex)})}
 var KEY='402ecf2f-51e7-41e8-9a08-3af5703fb68b';
 function askWho(){step=2;say('Clear: “'+short(a.task)+'”. Anything that helps us answer better: your name, company, deadline?',function(){free(true,'Name, company, deadline');chips([['','Skip']],function(){a.who='';askMail()})})}
-function askMail(){step=3;say('Where should the engineer send the answer? We reply within two working days. No newsletters.',function(){free(true,'name@company.com')})}
+function askMail(){step=3;say((a.task?'Clear: “'+short(a.task)+'”. ':'')+'Where should the engineer send the answer? We reply within two working days. No newsletters.',function(){free(true,'name@company.com')})}
 function draft(){var t=T[a.topic],L=['Interested in: '+t.label+'.'];
  if(a.detail)L.push(t.k+': '+a.detail+'.');
  if(a.task)L.push('','Task: '+a.task);
@@ -237,7 +258,7 @@ function send(){var d=draft();bot('Sending…');count('send');
 $('tc-f').onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(!v||inp.disabled)return;
  if(step===3&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){bot('That does not look like an email address. Please check it.');return}
  inp.value='';me(v);
- if(step===1){a.task=v;askWho()}else if(step===2){var c=log.querySelector('.tc-c');if(c)c.remove();a.who=v;askMail()}else if(step===3){a.mail=v;consent()}};
+ if(step===1){a.task=v;askMail()}else if(step===2){var c=log.querySelector('.tc-c');if(c)c.remove();a.who=v;askMail()}else if(step===3){a.mail=v;consent()}};
 inp.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('tc-f').requestSubmit()}};
 btn.onclick=function(){box.classList.add('open');btn.style.display='none';if(!started){started=true;count('open');start()}};
 $('tc-x').onclick=function(){box.classList.remove('open');btn.style.display=''};
