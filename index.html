@@ -65,6 +65,7 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <a class="prod" href="#case-cad"><b>TurboNexus: AI agent for CAD</b><span>A design change described in words, carried out on the model, with the old and new version and the bill-of-materials difference side by side. Reads STEP, no CAD licence needed; works on top of commercial and open-source CAD.</span><i>See the case →</i></a>
 <a class="prod" href="#case-package"><b>TurboNexus: engineering package</b><span>From 3D models to a review-ready package: model check, strength, drawings, job cards, compliance documents and a sign-off page, all from one data chain.</span><i>See the case →</i></a>
 <a class="prod" href="#case-beam"><b>TurboNexus Mechanical</b><span>Beam and shell models with transparent maths: stresses, deflections, reactions and an explicit list of what the model leaves out.</span><i>See the case →</i></a>
+<a class="prod" href="#case-cfd"><b>TurboNexus CFD</b><span>Wind and air flow around a real assembly straight from the STEP model: automatic grid, Euler solution with a Godunov-type scheme, forces and moments, and a correction by member shape checked against known flows.</span><i>See the case →</i></a>
 <a class="prod" href="#case-pdm"><b>TurboNexus PDM</b><span>A parts register kept in step with the model: structure, revisions, and change notices that wait for an engineer to close the checks before release.</span><i>See the case →</i></a>
 <a class="prod" href="#case-sas"><b>sasnet: secondary air systems</b><span>A 1D network method for cooling flows, seal leakage, cavity pressures and rotor axial thrust. Open source (Apache-2.0), consistent with tools used in EASA Part 21 and CS-E work.</span><i>See the case →</i></a>
 </div>
@@ -107,6 +108,20 @@ footer{padding:36px 0;color:var(--muted);font-size:15px}
 <source src="turbonexus-beam.mp4" type="video/mp4">
 </video>
 <p class="note">Preliminary beam model with rigid joints; bolts, welds and handrails are not in it. It is a calculation note for the responsible engineer, not a strength approval.</p>
+</article>
+
+<article class="case" id="case-cfd">
+<h3>Wind on an access platform: the Euler solution</h3>
+<video class="teaser" controls preload="none" playsinline poster="turbonexus-cfd-poster.jpg">
+<source src="turbonexus-cfd.mp4" type="video/mp4">
+</video>
+<ul class="pts">
+<li><b>597 → 616 N</b>force along the wind at 20 m/s, computed and tuned by member shape; hand estimate 650–750 N</li>
+<li><b>Godunov-type scheme</b>exact Riemann flux on every cell face, checked on the shock tube and on six Kármán flows</li>
+<li><b>One command</b>from the STEP model to forces and a section viewer; 191 235 cells, about 35 minutes on one core</li>
+</ul>
+<p class="lead" style="margin-top:14px"><a href="nexus-cfd.html">How the Euler solution works</a>: equations, grid, scheme, boundaries, checks and limits.</p>
+<p class="note">Preliminary inviscid estimate, not a wind load according to a standard. The video was recorded with the first tuning table (649 N).</p>
 </article>
 
 <article class="case" id="case-pdm">
@@ -181,6 +196,7 @@ var T={
  pkg:{label:'Engineering package from 3D models',q:'Which rules does the product follow?',o:['CS-25 / CS-23','Machinery / EN','Internal standard','Not sure'],k:'Rules',c:['#case-package','airliner flight-deck assembly'],ex:'e.g. 40-part bracket assembly, need drawings and a stress note'},
  pdm:{label:'PDM, parts register and changes',q:'How many people work with the design data?',o:['1 to 5','6 to 20','More than 20'],k:'Team size',c:['#case-pdm','a change notice in the register'],ex:'e.g. drawings in folders, revisions get mixed up'},
  mech:{label:'Mechanical checks',q:'What would you like checked?',o:['Frames and beams','Bolts and welds','Something else'],k:'Checks',c:['#case-beam','frame under load'],ex:'e.g. steel platform, 300 kg on the deck, four wheels'},
+ cfd:{label:'CFD, wind and flow',q:'What flow would you like computed?',o:['Wind on a structure','Internal flow','Heat transfer','Something else'],k:'Flow',c:['#case-cfd','wind on an access platform'],ex:'e.g. wind force on a 3 m steel frame at 25 m/s'},
  sas:{label:'Secondary air, sasnet',q:'What kind of machine is it?',o:['Gas turbine','Turbocharger or microturbine','Compressor','Other'],k:'Machine',c:['#case-sas','150-element network'],ex:'e.g. seal leakage and cavity pressure in a small turbine'},
  other:{label:'Something else',ex:'Your question'}
 };
